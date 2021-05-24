@@ -10,19 +10,16 @@ public abstract class Piece extends Group {
 		BLACK
 	}
 	
-	Image image;
-	ImageView imageView;
-	
-	
-	public Player color;
+	protected Image image;
+	protected ImageView imageView;	
+	protected Player color;
 	
 	public Piece(Player c)  {
 		this.color = c;
-		if (c == Player.WHITE) {
-			image = new Image("file:res/Chesspieces/White_Knight.png");
-		} else {
-			image = new Image("file:res/Chesspieces/Black_Knight.png");
-		}
+	}
+
+	protected void setImage(String url) {
+		image = new Image(url);
 		imageView = new ImageView(image);
 		imageView.setFitHeight(100);
 		imageView.setFitWidth(100);
@@ -30,33 +27,6 @@ public abstract class Piece extends Group {
 		imageView.fitWidthProperty();
 		imageView.setSmooth(true);
 		imageView.setPreserveRatio(true);
-        //imageView.setCache(true);
 		getChildren().add(imageView);
-//		centerImage();
-	}
-	
-	public void centerImage() {
-        Image img = imageView.getImage();
-        if (img != null) {
-            double w = 0;
-            double h = 0;
-
-            double ratioX = imageView.getFitWidth() / img.getWidth();
-            double ratioY = imageView.getFitHeight() / img.getHeight();
-
-            double reducCoeff = 0;
-            if(ratioX >= ratioY) {
-                reducCoeff = ratioY;
-            } else {
-                reducCoeff = ratioX;
-            }
-
-            w = img.getWidth() * reducCoeff;
-            h = img.getHeight() * reducCoeff;
-
-            imageView.setX((imageView.getFitWidth() - w) / 2);
-            imageView.setY((imageView.getFitHeight() - h) / 2);
-
-        }
 	}
 }

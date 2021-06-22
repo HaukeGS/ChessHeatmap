@@ -78,12 +78,12 @@ public class ChessBoard extends StackPane {
 		for (int i = 0; i < 8; i++) {
 			ColumnConstraints col = new ColumnConstraints();
 			RowConstraints row = new RowConstraints();
-			col.setPercentWidth(8);
-			row.setPercentHeight(8);
+			col.setPercentWidth(12.5);
+			row.setPercentHeight(12.5);
 			piecePane.getColumnConstraints().add(col);
 			piecePane.getRowConstraints().add(row);
 		}
-//		ColumnConstraints colLabel = new ColumnConstraints();
+		ColumnConstraints colLabel = new ColumnConstraints();
 //		colLabel.setPercentWidth(8);
 //		boardPane.getColumnConstraints().add(colLabel);
 		

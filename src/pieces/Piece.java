@@ -1,10 +1,11 @@
 package pieces;
 
-import javafx.scene.Group;
+import chessboard.ChessBoard;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 
-public abstract class Piece extends Group {
+public abstract class Piece extends Region {
 	public enum Player {
 		WHITE,
 		BLACK
@@ -14,19 +15,24 @@ public abstract class Piece extends Group {
 	protected ImageView imageView;	
 	protected Player color;
 	
-	public Piece(Player c)  {
+	public Piece(Player c, ChessBoard cb)  {
 		this.color = c;
+//		this.heightProperty().bind(cb.heightProperty().divide(8));
+//		this.widthProperty().bind(cb.widthProperty().divide(8));
+		setPrefHeight(USE_COMPUTED_SIZE);
+		setPrefWidth(USE_COMPUTED_SIZE);
 	}
 
 	protected void setImage(String url) {
 		image = new Image(url);
 		imageView = new ImageView(image);
-		imageView.setFitHeight(100);
-		imageView.setFitWidth(100);
-		imageView.fitHeightProperty();
-		imageView.fitWidthProperty();
-		imageView.setSmooth(true);
 		imageView.setPreserveRatio(true);
+		imageView.setFitHeight(USE_COMPUTED_SIZE);
+		imageView.setFitWidth(USE_COMPUTED_SIZE);
+		imageView.fitHeightProperty().bind(this.heightProperty());
+		imageView.fitWidthProperty().bind(this.widthProperty());
+		imageView.setSmooth(true);
 		getChildren().add(imageView);
+		setCenterShape(true);
 	}
 }

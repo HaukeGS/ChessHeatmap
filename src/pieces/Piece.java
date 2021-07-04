@@ -23,5 +23,6 @@ public abstract class Piece extends Rectangle {
 	protected void setImage(String url) {
 		image = new Image(url);
 		setFill(new ImagePattern(image));
+		System.out.println("test");
 	}
 }

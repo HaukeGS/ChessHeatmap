@@ -8,7 +8,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import pieces.Bishop;
-import pieces.EmptySquare;
 import pieces.King;
 import pieces.Knight;
 import pieces.Pawn;
@@ -89,14 +88,14 @@ public class ChessBoard extends StackPane {
 		
 		//init white pieces
 		Piece Rook_1 = new Rook(Player.WHITE, this);
-		piecePane.add(Rook_1, 'a', 1, 1, 1);
-		piecePane.add(new Knight(Player.WHITE, this), 'b', 1, 1, 1);
-		piecePane.add(new Bishop(Player.WHITE, this), 'c', 1, 1, 1);
-		piecePane.add(new Queen(Player.WHITE, this), 'd', 1, 1, 1);
-		piecePane.add(new King(Player.WHITE, this), 'e', 1, 1, 1);
-		piecePane.add(new Bishop(Player.WHITE, this), 'f', 1, 1, 1);
-		piecePane.add(new Knight(Player.WHITE, this), 'g', 1, 1, 1);
-		piecePane.add(new Rook(Player.WHITE, this), 'h', 1, 1, 1);
+		piecePane.addPiece(Rook_1, 'a', 1, 1, 1);
+		piecePane.addPiece(new Knight(Player.WHITE, this), 'b', 1, 1, 1);
+		piecePane.addPiece(new Bishop(Player.WHITE, this), 'c', 1, 1, 1);
+		piecePane.addPiece(new Queen(Player.WHITE, this), 'd', 1, 1, 1);
+		piecePane.addPiece(new King(Player.WHITE, this), 'e', 1, 1, 1);
+		piecePane.addPiece(new Bishop(Player.WHITE, this), 'f', 1, 1, 1);
+		piecePane.addPiece(new Knight(Player.WHITE, this), 'g', 1, 1, 1);
+		piecePane.addPiece(new Rook(Player.WHITE, this), 'h', 1, 1, 1);
 		
 //		for (int i = 3; i <= 6; i++) {
 //			for (int j = 0; j < 8; j++) {
@@ -110,14 +109,14 @@ public class ChessBoard extends StackPane {
 		
 				
 		//init black pieces
-		piecePane.add(new Rook(Player.BLACK, this), 'a', 8, 1, 1);
-		piecePane.add(new Knight(Player.BLACK, this), 'b', 8, 1, 1);
-		piecePane.add(new Bishop(Player.BLACK, this), 'c', 8, 1, 1);
-		piecePane.add(new Queen(Player.BLACK, this), 'd', 8, 1, 1);
-		piecePane.add(new King(Player.BLACK, this), 'e', 8, 1, 1);
-		piecePane.add(new Bishop(Player.BLACK, this), 'f', 8, 1, 1);
-		piecePane.add(new Knight(Player.BLACK, this), 'g', 8, 1, 1);
-		piecePane.add(new Rook(Player.BLACK, this), 'h', 8, 1, 1);
+		piecePane.addPiece(new Rook(Player.BLACK, this), 'a', 8, 1, 1);
+		piecePane.addPiece(new Knight(Player.BLACK, this), 'b', 8, 1, 1);
+		piecePane.addPiece(new Bishop(Player.BLACK, this), 'c', 8, 1, 1);
+		piecePane.addPiece(new Queen(Player.BLACK, this), 'd', 8, 1, 1);
+		piecePane.addPiece(new King(Player.BLACK, this), 'e', 8, 1, 1);
+		piecePane.addPiece(new Bishop(Player.BLACK, this), 'f', 8, 1, 1);
+		piecePane.addPiece(new Knight(Player.BLACK, this), 'g', 8, 1, 1);
+		piecePane.addPiece(new Rook(Player.BLACK, this), 'h', 8, 1, 1);
 		
 		initPawns();
 			
@@ -138,8 +137,8 @@ public class ChessBoard extends StackPane {
 		for (int i = 0; i < 8; i++) {
 			//ASCII offset
 			int x = 97+i;
-			piecePane.add(new Pawn(Player.WHITE, this), (char)x, 2, 1, 1);
-			piecePane.add(new Pawn(Player.BLACK, this), (char)x, 7, 1, 1);
+			piecePane.addPiece(new Pawn(Player.WHITE, this), (char)x, 2, 1, 1);
+			piecePane.addPiece(new Pawn(Player.BLACK, this), (char)x, 7, 1, 1);
 		}
 	}
 	
@@ -147,5 +146,6 @@ public class ChessBoard extends StackPane {
 	public void resize(double width, double height) {
 		super.resize(width, height);
 		piecePane.resize(width, height);
+		boardPane.resize(width, height);
 	}
 }

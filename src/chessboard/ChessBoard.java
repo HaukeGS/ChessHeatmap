@@ -29,23 +29,10 @@ public class ChessBoard extends StackPane {
 		initBoard();
 		initPieces();
 		getChildren().addAll(boardPane, piecePane);
-		System.out.println(piecePane.getWidth());
-		System.out.println(this.getWidth());
+		System.out.println(piecePane.getPiece('a', 1).toString());
 	}
 
 	private void initBoard() {
-//		for (int i = 0; i < 8; i++) {
-//			ColumnConstraints col = new ColumnConstraints();
-//			RowConstraints row = new RowConstraints();
-//			col.setPercentWidth(8);
-//			row.setPercentHeight(8);
-//			boardPane.getColumnConstraints().add(col);
-//			boardPane.getRowConstraints().add(row);
-//		}
-//		RowConstraints rowLabel = new RowConstraints();
-//		rowLabel.setPercentHeight(8);
-//		boardPane.getRowConstraints().add(rowLabel);
-		
 		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -54,12 +41,7 @@ public class ChessBoard extends StackPane {
 					c = Color.WHITE;
 				else
 					c = Color.BROWN;
-//				boardPane.add(new Square(i, j, c), i, j);
-				Rectangle square = new Rectangle();
-				square.setFill(c);
-				boardPane.add(square, i, j);
-                square.widthProperty().bind(this.widthProperty().divide(8));
-                square.heightProperty().bind(this.heightProperty().divide(8));
+				boardPane.addSquare(i, j, c, this);
 			}
 		}
 //		for (int i = 0; i < 8; i++) {
@@ -69,54 +51,29 @@ public class ChessBoard extends StackPane {
 	}
 	
 	private void initPieces() {
-//		piecePane.setMinHeight(this.getHeight());
-//		piecePane.setMinWidth(this.getWidth());
-//		piecePane.prefHeightProperty().bind(this.heightProperty());
-//		piecePane.prefWidthProperty().bind(this.widthProperty());
-
-		for (int i = 0; i < 8; i++) {
-			ColumnConstraints col = new ColumnConstraints();
-			RowConstraints row = new RowConstraints();
-			col.setPercentWidth(12.5);
-			row.setPercentHeight(12.5);
-			piecePane.getColumnConstraints().add(col);
-			piecePane.getRowConstraints().add(row);
-		}
-		ColumnConstraints colLabel = new ColumnConstraints();
+//		ColumnConstraints colLabel = new ColumnConstraints();
 //		colLabel.setPercentWidth(8);
 //		boardPane.getColumnConstraints().add(colLabel);
 		
 		//init white pieces
-		Piece Rook_1 = new Rook(Player.WHITE, this);
-		piecePane.addPiece(Rook_1, 'a', 1, 1, 1);
-		piecePane.addPiece(new Knight(Player.WHITE, this), 'b', 1, 1, 1);
-		piecePane.addPiece(new Bishop(Player.WHITE, this), 'c', 1, 1, 1);
-		piecePane.addPiece(new Queen(Player.WHITE, this), 'd', 1, 1, 1);
-		piecePane.addPiece(new King(Player.WHITE, this), 'e', 1, 1, 1);
-		piecePane.addPiece(new Bishop(Player.WHITE, this), 'f', 1, 1, 1);
-		piecePane.addPiece(new Knight(Player.WHITE, this), 'g', 1, 1, 1);
-		piecePane.addPiece(new Rook(Player.WHITE, this), 'h', 1, 1, 1);
-		
-//		for (int i = 3; i <= 6; i++) {
-//			for (int j = 0; j < 8; j++) {
-//				Rectangle empty = new Rectangle();
-//				piecePane.add(empty, j, i);
-//            	empty.widthProperty().bind(this.widthProperty().divide(8));
-//            	empty.heightProperty().bind(this.heightProperty().divide(8));
-//			}
-//		}
-		
-		
+		piecePane.addPiece(new Rook(Player.WHITE, this), 'a', 1);
+		piecePane.addPiece(new Knight(Player.WHITE, this), 'b', 1);
+		piecePane.addPiece(new Bishop(Player.WHITE, this), 'c', 1);
+		piecePane.addPiece(new Queen(Player.WHITE, this), 'd', 1);
+		piecePane.addPiece(new King(Player.WHITE, this), 'e', 1);
+		piecePane.addPiece(new Bishop(Player.WHITE, this), 'f', 1);
+		piecePane.addPiece(new Knight(Player.WHITE, this), 'g', 1);
+		piecePane.addPiece(new Rook(Player.WHITE, this), 'h', 1);
 				
 		//init black pieces
-		piecePane.addPiece(new Rook(Player.BLACK, this), 'a', 8, 1, 1);
-		piecePane.addPiece(new Knight(Player.BLACK, this), 'b', 8, 1, 1);
-		piecePane.addPiece(new Bishop(Player.BLACK, this), 'c', 8, 1, 1);
-		piecePane.addPiece(new Queen(Player.BLACK, this), 'd', 8, 1, 1);
-		piecePane.addPiece(new King(Player.BLACK, this), 'e', 8, 1, 1);
-		piecePane.addPiece(new Bishop(Player.BLACK, this), 'f', 8, 1, 1);
-		piecePane.addPiece(new Knight(Player.BLACK, this), 'g', 8, 1, 1);
-		piecePane.addPiece(new Rook(Player.BLACK, this), 'h', 8, 1, 1);
+		piecePane.addPiece(new Rook(Player.BLACK, this), 'a', 8);
+		piecePane.addPiece(new Knight(Player.BLACK, this), 'b', 8);
+		piecePane.addPiece(new Bishop(Player.BLACK, this), 'c', 8);
+		piecePane.addPiece(new Queen(Player.BLACK, this), 'd', 8);
+		piecePane.addPiece(new King(Player.BLACK, this), 'e', 8);
+		piecePane.addPiece(new Bishop(Player.BLACK, this), 'f', 8);
+		piecePane.addPiece(new Knight(Player.BLACK, this), 'g', 8);
+		piecePane.addPiece(new Rook(Player.BLACK, this), 'h', 8);
 		
 		initPawns();
 			
@@ -137,8 +94,8 @@ public class ChessBoard extends StackPane {
 		for (int i = 0; i < 8; i++) {
 			//ASCII offset
 			int x = 97+i;
-			piecePane.addPiece(new Pawn(Player.WHITE, this), (char)x, 2, 1, 1);
-			piecePane.addPiece(new Pawn(Player.BLACK, this), (char)x, 7, 1, 1);
+			piecePane.addPiece(new Pawn(Player.WHITE, this), (char)x, 2);
+			piecePane.addPiece(new Pawn(Player.BLACK, this), (char)x, 7);
 		}
 	}
 	

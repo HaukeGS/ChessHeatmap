@@ -2,8 +2,6 @@ package chessboard;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 import util.ChessUtil;
 
 public class BoardPane extends GridPane {
@@ -55,16 +53,15 @@ public class BoardPane extends GridPane {
 	}
 	
 	protected void hightlightSquare(int x, int y) {
-//		Square square = squares[x][y];
-//		Circle circle = new Circle(25, Color.GRAY);
-//		circle.radiusProperty().bind(square.widthProperty().divide(4));
-//		circle.centerXProperty().bind(square.widthProperty().divide(2));
-//		circle.centerYProperty().bind(square.widthProperty().divide(2));
-//		Shape.union(square, circle);
-//		Color temp = square.getColor()
-//		removeSquare(x,y);
-//		addSquare()
-		
+		squares[x][y].highlight();		
+	}
+	
+	protected void dehighlightSquare(char x, int y) {
+		dehighlightSquare(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
+	}
+	
+	protected void dehighlightSquare(int x, int y) {
+		squares[x][y].dehighlight();
 	}
 
 }

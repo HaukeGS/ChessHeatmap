@@ -41,10 +41,11 @@ public class Square extends Rectangle {
 //		circle.radiusProperty().bind(this.widthProperty().divide(4));
 //		circle.centerXProperty().bind(this.widthProperty().divide(2));
 //		circle.centerYProperty().bind(this.widthProperty().divide(2));
+		setFill(Color.BLACK);
 	}
 	
 	public void dehighlight() {
-		
+		setFill(color);
 	}
 	
 	public Color getColor() {

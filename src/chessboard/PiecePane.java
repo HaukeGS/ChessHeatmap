@@ -1,15 +1,14 @@
 package chessboard;
 
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import pieces.Empty;
 import pieces.Piece;
 import util.ChessUtil;
 
 public class PiecePane extends GridPane {
 	
-	Piece[][] pieces;
-	ChessBoard cb;
+	private Piece[][] pieces;
+	private final ChessBoard cb;
 	
 	//Do NOT use add to add pieces to the PiecePane. Use addPiece instead!
 	public PiecePane(ChessBoard cb) {
@@ -24,16 +23,16 @@ public class PiecePane extends GridPane {
 		}
 	}
 
-	private void initConstraints() {
-		for (int i = 0; i < 8; i++) {
-			ColumnConstraints col = new ColumnConstraints();
-			RowConstraints row = new RowConstraints();
-			col.setPercentWidth(12.5);
-			row.setPercentHeight(12.5);
-			getColumnConstraints().add(col);
-			getRowConstraints().add(row);
-		}
-	}
+//	private void initConstraints() {
+//		for (int i = 0; i < 8; i++) {
+//			ColumnConstraints col = new ColumnConstraints();
+//			RowConstraints row = new RowConstraints();
+//			col.setPercentWidth(12.5);
+//			row.setPercentHeight(12.5);
+//			getColumnConstraints().add(col);
+//			getRowConstraints().add(row);
+//		}
+//	}
 	
 	//Adds the Piece to the children and to the piece matrix
 	protected void addPiece(Piece piece, char x, int y) {
@@ -55,15 +54,24 @@ public class PiecePane extends GridPane {
 		return pieces[x][y];
 	}
 	
-	protected void movePiece(char sourceX, int sourceY, char targetX, int targetY) {
+	public Piece[][] getPieces() {
+		return pieces;
+	}
+	
+	public void movePiece(char sourceX, int sourceY, char targetX, int targetY) {
 		movePiece(ChessUtil.asciiOffset(sourceX), ChessUtil.inverseIndex(sourceY), ChessUtil.asciiOffset(targetX), ChessUtil.inverseIndex(targetY));
 	}
 	
-	protected void movePiece(int sourceX, int sourceY, int targetX, int targetY) {
+	private void movePiece(int sourceX, int sourceY, int targetX, int targetY) {
 		Piece piece = pieces[sourceX][sourceY];
-		pieces[sourceX][sourceY] = null;
+		Piece target = pieces[targetX][targetY];
+		if (!(target instanceof Empty))
+			getChildren().remove(target);
 		getChildren().remove(piece);
+		piece.setChessX((char)(targetX+97));
+		piece.setChessY(8-targetY);
 		addPiece(piece, targetX, targetY);
+		addPiece(new Empty((char)(sourceX+97), 8-sourceY), sourceX, sourceY);
 	}
 	
 	protected void removePiece(char x, int y) {
@@ -73,8 +81,7 @@ public class PiecePane extends GridPane {
 	protected void removePiece(int x, int y) {
 		Piece piece = pieces[x][y];
 		pieces[x][y] = null;
-		getChildren().remove(piece);
-		
+		getChildren().remove(piece);		
 	}
 
 }

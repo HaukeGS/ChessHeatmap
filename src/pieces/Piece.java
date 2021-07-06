@@ -1,5 +1,6 @@
 package pieces;
 
+import chessboard.PiecePane;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -13,13 +14,19 @@ public abstract class Piece extends Rectangle {
 		NONE
 	}
 	
-	protected Image image;
-	protected Player color;
+	private Image image;
+	private Player color;
+	private char fenChar;
+	private boolean selected;
+	private char chessX;
+	private int chessY;
 	
-	public Piece(Player c)  {
+	public Piece(Player c, char chessX, int chessY)  {
 		this.color = c;
+		this.selected = false;
+		this.chessX = chessX;
+		this.chessY = chessY;
 		createEvents();
-		setPickOnBounds(true);
 	}
 
 	protected void setImage(String url) {
@@ -27,14 +34,35 @@ public abstract class Piece extends Rectangle {
 		setFill(new ImagePattern(image));
 	}
 	
+	protected void setFenChar(char c) {
+		this.fenChar = c;
+	}
+	
+	public char getFenChar() {
+		return fenChar;
+	}
+	
 	private void createEvents() {
 		
 		EventHandler<MouseEvent> onMouseClicked = new EventHandler<MouseEvent>() {
 
 			@Override
-			public void handle(MouseEvent arg0) {
-				System.out.println("test");
-				
+			public void handle(MouseEvent event) {
+				Piece piece = (Piece) event.getSource();			//clicked piece
+				if (util.GameLogic.getSelected() == null) { 				//if no piece is selected
+					if (!(piece instanceof Empty)) {   				//and an actual piece and no empty space is clicked
+						util.GameLogic.setSelected(piece);				//select the clicked piece
+						System.out.println(util.GameLogic.getSelected());						
+					} else {
+																	//if empty space is clicked, do nothing
+					}
+				} else if (util.GameLogic.getSelected() != null) {
+					if (util.GameLogic.isMoveLegal(piece)) {
+						util.GameLogic.movePiece(piece);
+					} else {
+						util.GameLogic.deselect();
+					}
+				}
 			}			
 		};
 		
@@ -45,4 +73,22 @@ public abstract class Piece extends Rectangle {
 	public String toString() {
 		return color.toString() + " " + this.getClass();
 	}
+
+	public char getChessX() {
+		return chessX;
+	}
+
+	public void setChessX(char chessX) {
+		this.chessX = chessX;
+	}
+
+	public int getChessY() {
+		return chessY;
+	}
+
+	public void setChessY(int chessY) {
+		this.chessY = chessY;
+	}
+	
+	
 }

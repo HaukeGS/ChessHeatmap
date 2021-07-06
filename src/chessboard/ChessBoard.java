@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import pieces.Bishop;
+import pieces.Empty;
 import pieces.King;
 import pieces.Knight;
 import pieces.Pawn;
@@ -65,6 +66,12 @@ public class ChessBoard extends StackPane {
 		piecePane.addPiece(new Bishop(Player.WHITE), 'f', 1);
 		piecePane.addPiece(new Knight(Player.WHITE), 'g', 1);
 		piecePane.addPiece(new Rook(Player.WHITE), 'h', 1);
+		
+		for (char i = 'a'; i <= 'h'; i++) {
+			for (int j = 3; j <= 6; j++) {
+				piecePane.addPiece(new Empty(), i, j);
+			}
+		}
 				
 		//init black pieces
 		piecePane.addPiece(new Rook(Player.BLACK), 'a', 8);

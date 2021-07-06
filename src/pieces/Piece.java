@@ -9,7 +9,8 @@ import javafx.scene.shape.Rectangle;
 public abstract class Piece extends Rectangle {
 	public enum Player {
 		WHITE,
-		BLACK
+		BLACK,
+		NONE
 	}
 	
 	protected Image image;
@@ -18,6 +19,7 @@ public abstract class Piece extends Rectangle {
 	public Piece(Player c)  {
 		this.color = c;
 		createEvents();
+		setPickOnBounds(true);
 	}
 
 	protected void setImage(String url) {

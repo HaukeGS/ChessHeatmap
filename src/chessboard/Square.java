@@ -17,6 +17,7 @@ public class Square extends Rectangle {
 		this.color = c;
 		setFill(c);
 		registerEvents();
+		setPickOnBounds(true);
 //		highlight();
 	}
 	

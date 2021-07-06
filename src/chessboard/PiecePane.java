@@ -14,7 +14,7 @@ public class PiecePane extends GridPane {
 	//Do NOT use add to add pieces to the PiecePane. Use addPiece instead!
 	public PiecePane(ChessBoard cb) {
 		this.cb = cb;
-		initConstraints();
+//		initConstraints();
 		
 		pieces = new Piece[8][8];
 		for (int i = 0; i < 8; i++) {

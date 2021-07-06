@@ -4,13 +4,16 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import pieces.Piece;
+import util.ChessUtil;
 
 public class PiecePane extends GridPane {
 	
 	Piece[][] pieces;
+	ChessBoard cb;
 	
 	//Do NOT use add to add pieces to the PiecePane. Use addPiece instead!
-	public PiecePane() {		
+	public PiecePane(ChessBoard cb) {
+		this.cb = cb;
 		initConstraints();
 		
 		pieces = new Piece[8][8];
@@ -40,6 +43,8 @@ public class PiecePane extends GridPane {
 	protected void addPiece(Piece piece, int x, int y) {
 		pieces[x][y] = piece;
 		add(piece, x, y, 1 ,1);
+		piece.heightProperty().bind(cb.heightProperty().divide(8));
+		piece.widthProperty().bind(cb.widthProperty().divide(8));
 	}
 	
 	protected Piece getPiece(char x, int y) {

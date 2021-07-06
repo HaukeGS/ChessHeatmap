@@ -1,7 +1,8 @@
 package pieces;
 
-import chessboard.ChessBoard;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
@@ -14,15 +15,28 @@ public abstract class Piece extends Rectangle {
 	protected Image image;
 	protected Player color;
 	
-	public Piece(Player c, ChessBoard cb)  {
+	public Piece(Player c)  {
 		this.color = c;
-		this.heightProperty().bind(cb.heightProperty().divide(8));
-		this.widthProperty().bind(cb.widthProperty().divide(8));
+		createEvents();
 	}
 
 	protected void setImage(String url) {
 		image = new Image(url);
 		setFill(new ImagePattern(image));
+	}
+	
+	private void createEvents() {
+		
+		EventHandler<MouseEvent> onMouseClicked = new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				System.out.println("test");
+				
+			}			
+		};
+		
+		addEventFilter(MouseEvent.MOUSE_CLICKED, onMouseClicked);
 	}
 	
 	@Override

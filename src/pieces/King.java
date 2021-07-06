@@ -1,11 +1,9 @@
 package pieces;
 
-import chessboard.ChessBoard;
-
 public class King extends Piece {
 	
-	public King (Player c, ChessBoard cb) {
-		super(c, cb);
+	public King (Player c) {
+		super(c);
 		if (c == Player.WHITE) {
 			setImage("file:res/Chesspieces/White_King.png");
 		} else {

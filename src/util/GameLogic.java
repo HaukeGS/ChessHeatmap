@@ -1,6 +1,5 @@
 package util;
 
-import chessboard.Coord;
 import chessboard.PiecePane;
 import pieces.Piece;
 import pieces.Piece.Player;
@@ -15,7 +14,6 @@ public final class GameLogic {
 		private static int emptyMoveCount;
 		private static int moveCount;
 		private static Piece selected;
-		private static RulesManager rulesManager;
 		
 		private static enum CastleRights {
 			BOTH,
@@ -32,7 +30,6 @@ public final class GameLogic {
 			blackCastleRights = CastleRights.BOTH;
 			emptyMoveCount = 0;
 			moveCount = 0;
-			rulesManager = new RulesManager();
 			System.out.println(stockfish.startEngine());
 		}
 		
@@ -55,9 +52,9 @@ public final class GameLogic {
 			selected = null;
 		}
 		
-		public static boolean isMoveLegal(Coord source, Coord target) {
+		public static boolean isMoveLegal(char sourceX, int sourceY, char targetX, int targetY) {
 			try {
-				return rulesManager.isLegal(source, target);
+				System.out.println(stockfish.getLegalMoves("8/6pk/8/1R5p/3K3P/8/6r1/8 b - - 0 42"));
 			} catch (Exception e) {
 				System.out.println(e.toString());
 			}
@@ -67,13 +64,13 @@ public final class GameLogic {
 		public static boolean isMoveLegal(Piece target) {
 			if (selected == null)
 				return false;
-			return isMoveLegal(selected.getCoord(), target.getCoord());
+			return isMoveLegal(selected.getChessX(), selected.getChessY(), target.getChessX(), target.getChessY());
 		}
 		
 		public static void movePiece(Piece target) {
 			if (selected == null)
 				throw new IllegalStateException("Crashed because you tried to move a piece without selecting one");
-			piecePane.movePiece(selected.getCoord(), target.getCoord());
+			piecePane.movePiece(selected.getChessX(), selected.getChessY(), target.getChessX(), target.getChessY());
 			deselect();
 		}
 		

@@ -1,12 +1,10 @@
 package pieces;
 
-import chessboard.Coord;
-import pieces.Piece.Player;
 
 public class Rook extends Piece {
 	
-public Rook (Player c, Coord coord) {
-	super(c, coord);
+public Rook (Player c, char x, int y) {
+	super(c, x, y);
 	if (c == Player.WHITE) {
 		setImage("file:res/Chesspieces/White_Rook.png");
 		setFenChar('R');

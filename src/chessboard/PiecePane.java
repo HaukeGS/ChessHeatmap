@@ -34,34 +34,44 @@ public class PiecePane extends GridPane {
 //		}
 //	}
 	
-	protected void addPiece(Piece piece) {
-		pieces[piece.getCoord().getChessX()][piece.getCoord().getChessY()] = piece;
-		add(piece, piece.getCoord().getChessX(), piece.getCoord().getChessY(), 1 ,1);
+	//Adds the Piece to the children and to the piece matrix
+	protected void addPiece(Piece piece, char x, int y) {
+		addPiece(piece, ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
+	}
+	
+	protected void addPiece(Piece piece, int x, int y) {
+		pieces[x][y] = piece;
+		add(piece, x, y, 1 ,1);
 		piece.heightProperty().bind(cb.heightProperty().divide(8));
 		piece.widthProperty().bind(cb.widthProperty().divide(8));
 	}
 	
-//	protected Piece getPiece(char x, int y) {
-//		return getPiece(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
-//	}
-//	
-//	protected Piece getPiece(int x, int y) {
-//		return pieces[x][y];
-//	}
+	protected Piece getPiece(char x, int y) {
+		return getPiece(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
+	}
+	
+	protected Piece getPiece(int x, int y) {
+		return pieces[x][y];
+	}
 	
 	public Piece[][] getPieces() {
 		return pieces;
 	}
 	
-	public void movePiece(Coord sourceCoord, Coord targetCoord) {
-		Piece piece = pieces[sourceCoord.getChessX()][sourceCoord.getChessY()];
-		Piece target = pieces[targetCoord.getChessX()][targetCoord.getChessY()];
+	public void movePiece(char sourceX, int sourceY, char targetX, int targetY) {
+		movePiece(ChessUtil.asciiOffset(sourceX), ChessUtil.inverseIndex(sourceY), ChessUtil.asciiOffset(targetX), ChessUtil.inverseIndex(targetY));
+	}
+	
+	private void movePiece(int sourceX, int sourceY, int targetX, int targetY) {
+		Piece piece = pieces[sourceX][sourceY];
+		Piece target = pieces[targetX][targetY];
 		if (!(target instanceof Empty))
 			getChildren().remove(target);
 		getChildren().remove(piece);
-		piece.setCoord(targetCoord);
-		addPiece(piece);
-		addPiece(new Empty(sourceCoord));
+		piece.setChessX((char)(targetX+97));
+		piece.setChessY(8-targetY);
+		addPiece(piece, targetX, targetY);
+		addPiece(new Empty((char)(sourceX+97), 8-sourceY), sourceX, sourceY);
 	}
 	
 	protected void removePiece(char x, int y) {

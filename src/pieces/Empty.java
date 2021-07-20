@@ -1,12 +1,11 @@
 package pieces;
 
-import chessboard.Coord;
 import javafx.scene.paint.Color;
 
 public class Empty extends Piece {
 
-	public Empty(Coord coord) {
-		super(Player.NONE, coord);
+	public Empty(char x, int y) {
+		super(Player.NONE, x, y);
 		setFill(Color.TRANSPARENT);
 		setFenChar('1');
 	}

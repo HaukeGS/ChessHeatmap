@@ -1,12 +1,9 @@
 package pieces;
 
-import chessboard.Coord;
-import pieces.Piece.Player;
-
 public class Bishop extends Piece {
 		
-	public Bishop (Player c, Coord coord) {
-		super(c, coord);;
+	public Bishop (Player c, char x, int y) {
+		super(c, x, y);
 		if (c == Player.WHITE) {
 			setImage("file:res/Chesspieces/White_Bishop.png");
 			setFenChar('B');

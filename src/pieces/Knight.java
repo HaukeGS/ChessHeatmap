@@ -1,12 +1,10 @@
 package pieces;
 
-import chessboard.Coord;
-import pieces.Piece.Player;
 
 public class Knight extends Piece {
 	
-public Knight (Player c, Coord coord) {
-	super(c, coord);
+public Knight (Player c, char x, int y) {
+	super(c, x, y);
 	if (c == Player.WHITE) {
 		setImage("file:res/Chesspieces/White_Knight.png");
 		setFenChar('N');

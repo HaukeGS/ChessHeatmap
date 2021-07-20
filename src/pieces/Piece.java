@@ -1,6 +1,6 @@
 package pieces;
 
-import chessboard.Coord;
+import chessboard.PiecePane;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -18,12 +18,14 @@ public abstract class Piece extends Rectangle {
 	private Player color;
 	private char fenChar;
 	private boolean selected;
-	private Coord coord;
+	private char chessX;
+	private int chessY;
 	
-	public Piece(Player c, Coord coord)  {
+	public Piece(Player c, char chessX, int chessY)  {
 		this.color = c;
 		this.selected = false;
-		this.coord = coord;
+		this.chessX = chessX;
+		this.chessY = chessY;
 		createEvents();
 	}
 
@@ -71,13 +73,21 @@ public abstract class Piece extends Rectangle {
 	public String toString() {
 		return color.toString() + " " + this.getClass();
 	}
-	
-	public Coord getCoord() {
-		return coord;
+
+	public char getChessX() {
+		return chessX;
 	}
-	
-	public void setCoord(Coord c) {
-		this.coord = c;
+
+	public void setChessX(char chessX) {
+		this.chessX = chessX;
+	}
+
+	public int getChessY() {
+		return chessY;
+	}
+
+	public void setChessY(int chessY) {
+		this.chessY = chessY;
 	}
 	
 	

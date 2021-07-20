@@ -1,11 +1,10 @@
 package pieces;
 
-import chessboard.Coord;
 
 public class Pawn extends Piece {
 	
-public Pawn (Player c, Coord coord) {
-	super(c, coord);
+public Pawn (Player c, char x, int y) {
+	super(c, x, y);
 	if (c == Player.WHITE) {
 		setImage("file:res/Chesspieces/White_Pawn.png");
 		setFenChar('P');

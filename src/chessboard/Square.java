@@ -8,16 +8,16 @@ import javafx.scene.shape.Rectangle;
 
 public class Square extends Rectangle {
 	
-	private Coord coord;
+	private int x;
+	private int y;
 	private Color color;
 	
-	public Square (double width, double height, Coord coord, Color c) {
+	public Square (double width, double height, Color c) {
 		super(width, height);
 		this.color = c;
 		setFill(c);
 		registerEvents();
 		setPickOnBounds(true);
-		this.coord = coord;
 //		highlight();
 	}
 	

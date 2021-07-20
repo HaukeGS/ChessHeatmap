@@ -14,10 +14,10 @@ public class BoardPane extends GridPane {
 		this.cb = cb;
 	}
 	
-	protected void addSquare(Coord coord, Color c) {
-		Square square = new Square (100, 100, coord, c);
-		squares[coord.getChessX()][coord.getChessY()] = square;
-		add(square, coord.getChessX(), coord.getChessY());
+	protected void addSquare(int x, int y, Color c) {
+		Square square = new Square (100, 100, c);
+		squares[x][y] = square;
+		add(square, x, y);
         square.widthProperty().bind(cb.widthProperty().divide(8));
         square.heightProperty().bind(cb.heightProperty().divide(8));
 	}

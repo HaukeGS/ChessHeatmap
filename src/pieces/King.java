@@ -1,12 +1,9 @@
 package pieces;
 
-import chessboard.Coord;
-import pieces.Piece.Player;
-
 public class King extends Piece {
 	
-	public King (Player c, Coord coord) {
-		super(c, coord);
+	public King (Player c, char x, int y) {
+		super(c, x, y);
 		if (c == Player.WHITE) {
 			setImage("file:res/Chesspieces/White_King.png");
 			setFenChar('K');

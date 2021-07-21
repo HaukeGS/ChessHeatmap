@@ -2,6 +2,9 @@ package util;
 
 import chessboard.Coord;
 import chessboard.PiecePane;
+import pieces.Empty;
+import pieces.King;
+import pieces.Pawn;
 import pieces.Piece;
 import pieces.Piece.Player;
 
@@ -26,14 +29,15 @@ public final class GameLogic {
 		
 		public static void init(PiecePane pP) {
 			piecePane = pP;
-			stockfish = new Stockfish();
+//			stockfish = new Stockfish();
 			toMove = Player.WHITE;
 			whiteCastleRights = CastleRights.BOTH;
 			blackCastleRights = CastleRights.BOTH;
 			emptyMoveCount = 0;
 			moveCount = 0;
 			rulesManager = new RulesManager();
-			System.out.println(stockfish.startEngine());
+			rulesManager.getMoves();
+//			System.out.println(stockfish.startEngine());
 		}
 		
 		private static void alternateToMove() {
@@ -73,8 +77,42 @@ public final class GameLogic {
 		public static void movePiece(Piece target) {
 			if (selected == null)
 				throw new IllegalStateException("Crashed because you tried to move a piece without selecting one");
+			isMoveSpecial(selected.getCoord(), target.getCoord());
+			rulesManager.movePiece(selected.getCoord(), target.getCoord());
 			piecePane.movePiece(selected.getCoord(), target.getCoord());
 			deselect();
+			alternateToMove();
+		}
+		
+		private static void castlingRooks (Coord source, Coord target) {
+			piecePane.movePiece(source, target);
+		}
+		
+		private static void isMoveSpecial(Coord source, Coord target) {
+			if ((selected instanceof Pawn) && (source.getChessX() != target.getChessX()) && (piecePane.getPiece(target) instanceof Empty)) {
+				//en passant move
+				System.out.println("en passant");
+				if (toMove.equals(Player.WHITE)) {
+					Coord toRemove = new Coord(target.getChessX(), target.getChessY() + 1);
+					piecePane.removePiece(toRemove);				
+				} else {
+					Coord toRemove = new Coord(target.getChessX(), target.getChessY() - 1);
+					piecePane.removePiece(toRemove);				
+				}
+			} else if ((selected instanceof King) && (Math.abs(target.getChessX() - source.getChessX()) >= 2)) {
+				//castling move
+				System.out.println("castling");
+				if (target.getChessX() == 2) { //Queenside castle
+					castlingRooks(new Coord(target.getChessX()-2, target.getChessY()), new Coord(target.getChessX()+1, target.getChessY()));
+				} else if (target.getChessX() == 6) { //Kingside castle
+					castlingRooks(new Coord(target.getChessX()+1, target.getChessY()), new Coord(target.getChessX()-1, target.getChessY()));
+				} else {
+					throw new RuntimeException("Something went wrong during castling. King is at" + target.toChessString() + ", where he is not supposed to be.");
+				}
+			} else if ((selected instanceof Pawn) && ((target.getChessY() == 0) || (target.getChessY() == 7))) {
+				//promotion
+				System.out.println("promotion");
+			}
 		}
 		
 		public static String generateFenString() {

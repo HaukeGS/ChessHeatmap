@@ -53,25 +53,27 @@ public class PiecePane extends GridPane {
 		return pieces;
 	}
 	
+	public Piece getPiece(Coord c) {
+		return pieces[c.getChessX()][c.getChessY()];
+	}
+	
 	public void movePiece(Coord sourceCoord, Coord targetCoord) {
 		Piece piece = pieces[sourceCoord.getChessX()][sourceCoord.getChessY()];
 		Piece target = pieces[targetCoord.getChessX()][targetCoord.getChessY()];
-		if (!(target instanceof Empty))
-			getChildren().remove(target);
+//		if (!(target instanceof Empty))
+		getChildren().remove(target);
 		getChildren().remove(piece);
 		piece.setCoord(targetCoord);
 		addPiece(piece);
 		addPiece(new Empty(sourceCoord));
 	}
 	
-	protected void removePiece(char x, int y) {
-		removePiece(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
-	}
-	
-	protected void removePiece(int x, int y) {
-		Piece piece = pieces[x][y];
-		pieces[x][y] = null;
-		getChildren().remove(piece);		
+	//call only if move is special
+	public void removePiece(Coord coord) {
+		Piece piece = pieces[coord.getChessX()][coord.getChessY()];
+		pieces[coord.getChessX()][coord.getChessY()] = null;
+		getChildren().remove(piece);
+		addPiece(new Empty(coord));
 	}
 
 }

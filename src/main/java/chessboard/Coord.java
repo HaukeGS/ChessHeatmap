@@ -23,11 +23,23 @@ public class Coord {
 		this.y = ChessUtil.inverseIndex(y);
 	}
 	
+	public char getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
 	public int getChessX() {
 		return implX;
 	}
 	
 	public int getChessY() {
 		return implY;
+	}
+	
+	public String toChessString() {
+		return Character.toUpperCase(x) + Integer.toString(y);
 	}
 }

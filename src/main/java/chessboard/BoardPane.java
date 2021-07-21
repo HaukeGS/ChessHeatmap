@@ -16,26 +16,26 @@ public class BoardPane extends GridPane {
 	
 	protected void addSquare(Coord coord, Color c) {
 		Square square = new Square (100, 100, coord, c);
-		squares[coord.getChessX()][coord.getChessY()] = square;
-		add(square, coord.getChessX(), coord.getChessY());
+		squares[coord.getX()][coord.getY()] = square;
+		add(square, coord.getX(), coord.getY());
         square.widthProperty().bind(cb.widthProperty().divide(8));
         square.heightProperty().bind(cb.heightProperty().divide(8));
 	}
 	
-	protected Square getSquare(int x, int y) {
-		return squares[x][y];
+	protected Square getSquare(Coord c) {
+		return squares[c.getX()][c.getY()];
 	}
-	
-	protected Square getSquare(char x, int y) {
-		return getSquare(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
-	}
-	
-	protected void recolorSquare(int x, int y, Color c) {
-		getSquare(x, y).setFill(c);
-	}
-	
-	protected void recolorSquare(char x, int y, Color c) {
-		recolorSquare(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y), c);
+
+	public void recolorSquares(int[][] whiteMatrix, int[][] blackMatrix) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				squares[i][j].setWhiteAttacks(whiteMatrix[i][j]);
+				squares[i][j].setBlackAttacks(blackMatrix[i][j]);
+//				squares[i][j].setWhiteAttacks(2);
+//				squares[i][j].setBlackAttacks(4);
+				squares[i][j].recolor();
+			}
+		}
 	}
 	
 	protected void highlightSquare(char x, int y) {

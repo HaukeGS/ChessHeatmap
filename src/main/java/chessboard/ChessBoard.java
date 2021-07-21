@@ -25,7 +25,7 @@ public class ChessBoard extends StackPane {
 		initBoard();
 		initPieces();
 		getChildren().addAll(boardPane, piecePane);
-		GameLogic.init(piecePane);
+		GameLogic.init(piecePane, boardPane);
 	}
 
 	private void initBoard() {

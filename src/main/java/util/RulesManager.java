@@ -15,7 +15,6 @@ import chessboard.Coord;
 
 public class RulesManager {
 	
-	private ChessRules rules;
 //	private ChessBoardModel board;
 	
 	private Board board;
@@ -159,13 +158,14 @@ public class RulesManager {
 				result[i][j] = 0;
 			}
 		}
-		List<Move> legalMoves = b.legalMoves();
-		System.out.println(legalMoves);
-		for (Move m : legalMoves) {
-			Coord c = moveToCoord(m);
-			result[c.getX()][c.getY()]++;
-		}
-		System.out.println(result);
+//		List<Move> legalMoves = b.legalMoves();
+//		System.out.println(legalMoves);
+//		for (Move m : legalMoves) {
+//			Coord c = moveToCoord(m);
+//			result[c.getX()][c.getY()]++;
+//		}
+//		System.out.println(result);
+		
 		
 		return result;
 	}

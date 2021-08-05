@@ -2,8 +2,9 @@ package application;
 	
 import chessboard.ChessBoard;
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
+import ui.UserInterface;
 
 
 public class Main extends Application {

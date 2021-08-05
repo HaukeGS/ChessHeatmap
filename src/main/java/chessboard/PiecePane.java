@@ -1,9 +1,17 @@
 package chessboard;
 
+import java.util.Set;
+
 import javafx.scene.layout.GridPane;
+import pieces.Bishop;
 import pieces.Empty;
+import pieces.King;
+import pieces.Knight;
+import pieces.Pawn;
 import pieces.Piece;
-import util.ChessUtil;
+import pieces.Piece.Player;
+import pieces.Queen;
+import pieces.Rook;
 
 public class PiecePane extends GridPane {
 	
@@ -65,7 +73,7 @@ public class PiecePane extends GridPane {
 		getChildren().remove(piece);
 		piece.setCoord(targetCoord);
 		addPiece(piece);
-		addPiece(new Empty(sourceCoord));
+		addPiece(new Empty(sourceCoord, this));
 	}
 	
 	//call only if move is special
@@ -73,7 +81,29 @@ public class PiecePane extends GridPane {
 		Piece piece = pieces[coord.getX()][coord.getY()];
 		pieces[coord.getX()][coord.getY()] = null;
 		getChildren().remove(piece);
-		addPiece(new Empty(coord));
+		addPiece(new Empty(coord, this));
 	}
-
+	
+	public int[][] attackingMatrix(Player color) {
+		int[][] result = new int[8][8];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				result[i][j] = 0;
+			}
+		}
+		for (Piece p[] : pieces) {
+			for (Piece piece : p) {
+				if (piece.getColor() == color) {
+					Set<Coord> aC = piece.getAttackedCoords();
+					for (Coord c : aC) {
+						result[c.getX()][c.getY()]++;
+					}
+				}
+			}
+		}
+		
+		System.out.println(result);
+		
+		return result;
+	}
 }

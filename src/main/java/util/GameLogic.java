@@ -48,7 +48,7 @@ public final class GameLogic {
 				toMove = Player.BLACK;
 			else
 				toMove = Player.WHITE;
-			boardPane.recolorSquares(rulesManager.getWhiteAttackingMatrix(), rulesManager.getBlackAttackingMatrix());
+			boardPane.recolorSquares(piecePane.attackingMatrix(Player.WHITE), piecePane.attackingMatrix(Player.BLACK));
 		}
 		
 		public static Piece getSelected() {

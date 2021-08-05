@@ -1,6 +1,12 @@
 package pieces;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import chessboard.Coord;
+import chessboard.PiecePane;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -18,12 +24,16 @@ public abstract class Piece extends Rectangle {
 	private Player color;
 	private char fenChar;
 	private boolean selected;
-	private Coord coord;
+	protected Coord coord;
+	protected Set<Coord> attackedCoords;
+	protected PiecePane piecePane;
 	
-	public Piece(Player c, Coord coord)  {
+	public Piece(Player c, Coord coord, PiecePane pP)  {
 		this.color = c;
 		this.selected = false;
 		this.coord = coord;
+		this.piecePane = pP;
+		this.attackedCoords = new HashSet<Coord>();
 		createEvents();
 	}
 
@@ -50,9 +60,10 @@ public abstract class Piece extends Rectangle {
 				if (util.GameLogic.getSelected() == null) { 				//if no piece is selected
 					if (!(piece instanceof Empty)) {   				//and an actual piece and no empty space is clicked
 						util.GameLogic.setSelected(piece);				//select the clicked piece
-						System.out.println(util.GameLogic.getSelected());						
+						System.out.println(piece.getAttackedCoords());
+//						System.out.println(util.GameLogic.getSelected());						
 					} else {
-																	//if empty space is clicked, do nothing
+						
 					}
 				} else if (util.GameLogic.getSelected() != null) {
 					if (util.GameLogic.isMoveLegal(piece)) {
@@ -78,6 +89,22 @@ public abstract class Piece extends Rectangle {
 	
 	public void setCoord(Coord c) {
 		this.coord = c;
+		setAttackedCoords();
+	}
+	
+	public abstract void setAttackedCoords();
+	
+	public void addAttackedCoord(Coord c) {
+		attackedCoords.add(c);
+	}
+	
+	public Set<Coord> getAttackedCoords() {
+		setAttackedCoords();
+		return attackedCoords;
+	}
+	
+	public Player getColor() {
+		return color;
 	}
 	
 	

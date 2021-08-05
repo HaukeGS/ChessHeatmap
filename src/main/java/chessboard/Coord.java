@@ -10,6 +10,8 @@ public class Coord {
 	private final int implY;
 
 	public Coord(char x, int y) {
+		if (x < 'a' || x > 'h' || y < 1 || y > 8)
+			throw new IllegalArgumentException("You tried to create a Coordinate not on the Chessboard.");
 		this.x = x;
 		this.y = y;
 		this.implX = ChessUtil.asciiOffset(x);
@@ -17,6 +19,8 @@ public class Coord {
 	}
 	
 	public Coord (int x, int y) {
+		if (x <0 || x > 7 || y < 0 || y > 7)
+			throw new IllegalArgumentException("You tried to create a Coordinate not on the Chessboard.");		
 		this.implX = x;
 		this.implY = y;
 		this.x = ChessUtil.asciiOffset(x);
@@ -37,6 +41,11 @@ public class Coord {
 	
 	public int getY() {
 		return implY;
+	}
+	
+	@Override
+	public String toString() {
+		return toChessString();
 	}
 	
 	public String toChessString() {

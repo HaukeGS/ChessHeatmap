@@ -52,7 +52,7 @@ public abstract class Piece extends Rectangle {
 				if (util.GameLogic.getSelected() == null) { 				//if no piece is selected
 					if (!(piece instanceof Empty)) {   				//and an actual piece and no empty space is clicked
 						util.GameLogic.setSelected(piece);				//select the clicked piece
-						System.out.println(util.GameLogic.getSelected());						
+//						System.out.println(util.GameLogic.getSelected());						
 					} else {
 																	//if empty space is clicked, do nothing
 					}

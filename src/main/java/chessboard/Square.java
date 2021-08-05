@@ -91,6 +91,11 @@ public class Square extends Rectangle {
 		this.attackCountWhite = count;
 	}
 	
+	public void printAttacks() {
+		System.out.println("Attack Cound White: " + attackCountWhite);
+		System.out.println("Attack Cound Black: " + attackCountBlack);
+	}
+	
 	public void resetCounts() {
 		attackCountBlack = 0;
 		attackCountWhite = 0;

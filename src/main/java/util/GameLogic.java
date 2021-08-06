@@ -115,6 +115,7 @@ public final class GameLogic {
 				}
 			} else if ((selected instanceof Pawn) && ((target.getY() == 0) || (target.getY() == 7))) {
 				//promotion
+				
 				System.out.println("promotion");
 			}
 		}

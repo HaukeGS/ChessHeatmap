@@ -47,13 +47,13 @@ public class Square extends Rectangle {
 	
 	public void recolor() {
 		if (attackCountBlack == 0 && attackCountWhite == 0) {
-			setFill(Color.YELLOW);
+			setFill(new Color (0.5,0.5,0.5,1.0));
 			return;
 		} else if (attackCountWhite == 0) {
-			setFill(Color.RED);
+			setFill(new Color(0.15, 0.15, 0.15, 1.0));
 			return;
 		} else if (attackCountBlack == 0) {
-			setFill(Color.GREEN);
+			setFill(new Color(0.85, 0.85, 0.85, 1.0));
 			return;
 		}
 		double attackWhite = (double) attackCountWhite;
@@ -62,11 +62,13 @@ public class Square extends Rectangle {
 		double g = 0.0;
 		double b = 0.0;
 		if (attackCountBlack > attackCountWhite) {
-			r = 1.0;
+			r = attackWhite / attackBlack;
 			g = attackWhite / attackBlack;
+			b = attackWhite / attackBlack;
 		} else {
-			g = 1.0;
 			r = attackBlack / attackWhite;
+			g = attackBlack / attackWhite;
+			b = attackBlack / attackWhite;
 		}
 		setFill(new Color(r,g,b,1.0));
 	}

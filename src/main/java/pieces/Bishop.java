@@ -1,7 +1,10 @@
 package pieces;
 
+import com.sun.javafx.geom.Rectangle;
+
 import chessboard.Coord;
 import chessboard.PiecePane;
+import javafx.scene.layout.HBox;
 
 public class Bishop extends Piece {
 		
@@ -14,6 +17,7 @@ public class Bishop extends Piece {
 			setImage("file:res/Chesspieces/Black_Bishop.png");	
 			setFenChar('b');
 		}
+		
 	}
 	
 	@Override

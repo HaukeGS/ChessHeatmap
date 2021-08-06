@@ -46,31 +46,33 @@ public class Square extends Rectangle {
 	}
 	
 	public void recolor() {
-		if (attackCountBlack == 0 && attackCountWhite == 0) {
-			setFill(new Color (0.5,0.5,0.5,1.0));
-			return;
-		} else if (attackCountWhite == 0) {
-			setFill(new Color(0.15, 0.15, 0.15, 1.0));
-			return;
-		} else if (attackCountBlack == 0) {
-			setFill(new Color(0.85, 0.85, 0.85, 1.0));
-			return;
-		}
-		double attackWhite = (double) attackCountWhite;
-		double attackBlack = (double) attackCountBlack;
-		double r = 0.0;
-		double g = 0.0;
-		double b = 0.0;
-		if (attackCountBlack > attackCountWhite) {
-			r = attackWhite / attackBlack;
-			g = attackWhite / attackBlack;
-			b = attackWhite / attackBlack;
-		} else {
-			r = attackBlack / attackWhite;
-			g = attackBlack / attackWhite;
-			b = attackBlack / attackWhite;
-		}
-		setFill(new Color(r,g,b,1.0));
+//		if (attackCountBlack == attackCountWhite) {
+//			setFill(new Color (0.6,0.6,0.6,1.0));
+//			return;
+//		} else if (attackCountWhite == 0) {
+//			setFill(new Color(0.25, 0.25, 0.25, 1.0));
+//			return;
+//		} else if (attackCountBlack == 0) {
+//			setFill(new Color(0.95, 0.95, 0.95, 1.0));
+//			return;
+//		}
+		int factor = attackCountWhite - attackCountBlack;
+		double colorValue = 0.60 + Math.max(-4, Math.min(4, factor)) * 0.0875;
+//		double attackWhite = (double) attackCountWhite;
+//		double attackBlack = (double) attackCountBlack;
+//		double r = 0.0;
+//		double g = 0.0;
+//		double b = 0.0;
+//		if (attackCountBlack > attackCountWhite) {
+//			r = attackWhite / attackBlack;
+//			g = attackWhite / attackBlack;
+//			b = attackWhite / attackBlack;
+//		} else {
+//			r = attackBlack / attackWhite;
+//			g = attackBlack / attackWhite;
+//			b = attackBlack / attackWhite;
+//		}
+		setFill(new Color(colorValue,colorValue,colorValue,1.0));
 	}
 	
 	public Coord getCoord() {

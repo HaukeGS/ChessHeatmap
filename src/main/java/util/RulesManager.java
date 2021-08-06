@@ -24,6 +24,10 @@ public class RulesManager {
 		
 	}
 	
+	public void importFen(String fen) {
+		board.loadFromFen(fen);
+	}
+	
 	public void getMoves() {
 		System.out.println("legal moves: " + board.legalMoves());
 		

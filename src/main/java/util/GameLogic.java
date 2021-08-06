@@ -43,6 +43,13 @@ public final class GameLogic {
 //			System.out.println(stockfish.startEngine());
 		}
 		
+		public static void initFromFen(PiecePane pP, BoardPane bP, String fen) {
+			rulesManager = new RulesManager();
+			rulesManager.importFen(fen);
+			piecePane = pP;
+			boardPane = bP;
+		}
+		
 		private static void alternateToMove() {
 			if (toMove == Player.WHITE)
 				toMove = Player.BLACK;

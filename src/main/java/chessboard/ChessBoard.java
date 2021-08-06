@@ -7,6 +7,7 @@ import pieces.Empty;
 import pieces.King;
 import pieces.Knight;
 import pieces.Pawn;
+import pieces.Piece;
 import pieces.Piece.Player;
 import pieces.Queen;
 import pieces.Rook;
@@ -24,8 +25,10 @@ public class ChessBoard extends StackPane {
 		boardPane.setGridLinesVisible(true);
 		initBoard();
 		initPieces();
+//		initPiecesFromFen("rn2k1r1/ppp1pp1p/3p2p1/5bn1/P7/2N2B2/1PPPPP2/2BNK1RR w Gkq - 4 11");
 		getChildren().addAll(boardPane, piecePane);
 		GameLogic.init(piecePane, boardPane);
+//		GameLogic.initFromFen(piecePane, boardPane, "rn2k1r1/ppp1pp1p/3p2p1/5bn1/P7/2N2B2/1PPPPP2/2BNK1RR w Gkq - 4 11");
 	}
 
 	private void initBoard() {
@@ -39,6 +42,59 @@ public class ChessBoard extends StackPane {
 					c = Color.BROWN;
 				boardPane.addSquare(new Coord(i, j), c);
 			}
+		}
+	}
+	
+	private void initPiecesFromFen(String fen) {
+		int x = 0;
+		int y = 0;
+		for (int i = 0; fen.charAt(i) != ' '; i++) {
+			if (fen.charAt(i) == '/') {
+				x = 0;
+				y++;
+				continue;
+			}
+			if (fen.charAt(i) <= '8' && fen.charAt(i) >= '0') {
+				int temp = Integer.parseInt(String.valueOf(fen.charAt(i)));
+				for (int j = 0; j < temp; j++) {
+					piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
+					x++;
+				}
+			} else {
+				piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
+				x++;
+			}
+		}
+	}
+	
+	private Piece newPieceFromFen(char fen, Coord c) {
+		switch(fen) {
+		case 'b':
+			return new Bishop(Player.BLACK, c, piecePane);
+		case 'k':
+			return new King(Player.BLACK, c, piecePane);
+		case 'n':
+			return new Knight(Player.BLACK, c, piecePane);
+		case 'p':
+			return new Pawn(Player.BLACK, c, piecePane);
+		case 'q':
+			return new Queen(Player.BLACK, c, piecePane);
+		case 'r':
+			return new Rook(Player.BLACK, c, piecePane);
+		case 'B':
+			return new Bishop(Player.WHITE, c, piecePane);
+		case 'K':
+			return new King(Player.WHITE, c, piecePane);
+		case 'N':
+			return new Knight(Player.WHITE, c, piecePane);
+		case 'P':
+			return new Pawn(Player.WHITE, c, piecePane);
+		case 'Q':
+			return new Queen(Player.WHITE, c, piecePane);
+		case 'R':
+			return new Rook(Player.WHITE, c, piecePane);
+		default:
+			return new Empty(c, piecePane);
 		}
 	}
 	

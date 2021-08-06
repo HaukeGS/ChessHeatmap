@@ -1,6 +1,7 @@
 package pieces;
 
-import com.sun.javafx.geom.Rectangle;
+
+import javafx.scene.shape.Rectangle;
 
 import chessboard.Coord;
 import chessboard.PiecePane;

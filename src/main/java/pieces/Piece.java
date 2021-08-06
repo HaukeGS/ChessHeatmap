@@ -10,7 +10,7 @@ import chessboard.PiecePane;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
@@ -21,6 +21,7 @@ public abstract class Piece extends Rectangle {
 		NONE
 	}
 	
+	private Rectangle rec;
 	private Image image;
 	private Player color;
 	private char fenChar;

@@ -15,7 +15,7 @@ public class Main extends Application {
 			//ChessBoard root = loader.load();
 //			ChessBoard root = new ChessBoard();
 			UserInterface root = new UserInterface();
-			Scene scene = new Scene(root,800,800);
+			Scene scene = new Scene(root,1200,1000);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setTitle("Chess Heatmap");
 			primaryStage.setScene(scene);

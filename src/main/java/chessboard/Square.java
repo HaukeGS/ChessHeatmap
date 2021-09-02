@@ -16,25 +16,25 @@ public class Square extends Rectangle {
 		super(width, height);
 		this.color = c;
 		setFill(c);
-		registerEvents();
+//		registerEvents();
 		setPickOnBounds(true);
 		this.coord = coord;
 //		highlight();
 	}
 	
-	private void registerEvents() {
-		
-		EventHandler<MouseEvent> onMouseClicked = new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				setFill(Color.BLACK);
-			}			
-		};
-		
-		addEventFilter(MouseEvent.MOUSE_CLICKED, onMouseClicked);
-		
-	}
+//	private void registerEvents() {
+//		
+//		EventHandler<MouseEvent> onMouseClicked = new EventHandler<MouseEvent>() {
+//
+//			@Override
+//			public void handle(MouseEvent arg0) {
+//				setFill(Color.BLACK);
+//			}			
+//		};
+//		
+//		addEventFilter(MouseEvent.MOUSE_CLICKED, onMouseClicked);
+//		
+//	}
 	
 	public void highlight () {
 //		Circle circle = new Circle(25, Color.GRAY);
@@ -45,33 +45,34 @@ public class Square extends Rectangle {
 		setFill(Color.BLACK);
 	}
 	
-	public void recolor() {
+	public void recolor(boolean colored) {
+		if (colored)
+			recolorColored();
+		else
+			recolorBW();
+	}
+	
+	private void recolorColored() {
 //		if (attackCountBlack == attackCountWhite) {
-//			setFill(new Color (0.6,0.6,0.6,1.0));
+//			setFill(new Color (1.0, 1.0, 0, 1.0));
 //			return;
-//		} else if (attackCountWhite == 0) {
-//			setFill(new Color(0.25, 0.25, 0.25, 1.0));
-//			return;
-//		} else if (attackCountBlack == 0) {
-//			setFill(new Color(0.95, 0.95, 0.95, 1.0));
-//			return;
+//		} else if (attackCountBlack > attackCountWhite) {
+//			
+//		} else if (attackCountBlack < attackCountWhite) {
+//			
 //		}
+		double range = 0.125;
+		int difference = attackCountWhite - attackCountBlack;
+		double colorValue = 0.50 + Math.max(-4, Math.min(4, difference)) * range;
+		setFill(new Color(1-colorValue,colorValue,0,1.0));
+		
+		
+	}
+	
+	private void recolorBW() {
+		double range = 0.1;
 		int factor = attackCountWhite - attackCountBlack;
-		double colorValue = 0.60 + Math.max(-4, Math.min(4, factor)) * 0.0875;
-//		double attackWhite = (double) attackCountWhite;
-//		double attackBlack = (double) attackCountBlack;
-//		double r = 0.0;
-//		double g = 0.0;
-//		double b = 0.0;
-//		if (attackCountBlack > attackCountWhite) {
-//			r = attackWhite / attackBlack;
-//			g = attackWhite / attackBlack;
-//			b = attackWhite / attackBlack;
-//		} else {
-//			r = attackBlack / attackWhite;
-//			g = attackBlack / attackWhite;
-//			b = attackBlack / attackWhite;
-//		}
+		double colorValue = 0.50 + Math.max(-4, Math.min(4, factor)) * range;
 		setFill(new Color(colorValue,colorValue,colorValue,1.0));
 	}
 	

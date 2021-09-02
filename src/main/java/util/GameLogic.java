@@ -21,6 +21,7 @@ public final class GameLogic {
 		private static int moveCount;
 		private static Piece selected;
 		private static RulesManager rulesManager;
+		private static boolean colored;
 		
 		private static enum CastleRights {
 			BOTH,
@@ -38,6 +39,8 @@ public final class GameLogic {
 			blackCastleRights = CastleRights.BOTH;
 			emptyMoveCount = 0;
 			moveCount = 0;
+			colored = false;
+			recolorSquares();
 			rulesManager = new RulesManager();
 			rulesManager.getMoves();
 //			System.out.println(stockfish.startEngine());
@@ -48,6 +51,10 @@ public final class GameLogic {
 			rulesManager.importFen(fen);
 			piecePane = pP;
 			boardPane = bP;
+			if (fen.contains("w"))
+				toMove = Player.WHITE;
+			else
+				toMove = Player.BLACK;
 		}
 		
 		private static void alternateToMove() {
@@ -55,7 +62,11 @@ public final class GameLogic {
 				toMove = Player.BLACK;
 			else
 				toMove = Player.WHITE;
-			boardPane.recolorSquares(piecePane.attackingMatrix(Player.WHITE), piecePane.attackingMatrix(Player.BLACK));
+			piecePane.clearAttackers();
+		}
+		
+		public static void recolorSquares() {
+			boardPane.recolorSquares(piecePane.attackingMatrix(Player.WHITE), piecePane.attackingMatrix(Player.BLACK), colored);			
 		}
 		
 		public static Piece getSelected() {
@@ -92,6 +103,7 @@ public final class GameLogic {
 			rulesManager.movePiece(selected.getCoord(), target.getCoord());
 			piecePane.movePiece(selected.getCoord(), target.getCoord());
 			deselect();
+			recolorSquares();
 			alternateToMove();
 		}
 		
@@ -262,5 +274,9 @@ public final class GameLogic {
 			
 //			System.out.println(result);
 			return result;
+		}
+		
+		public static void setColored(boolean c) {
+			colored = c;
 		}
 }

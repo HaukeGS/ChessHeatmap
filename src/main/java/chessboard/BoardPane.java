@@ -18,22 +18,22 @@ public class BoardPane extends GridPane {
 		Square square = new Square (100, 100, coord, c);
 		squares[coord.getX()][coord.getY()] = square;
 		add(square, coord.getX(), coord.getY());
-        square.widthProperty().bind(cb.widthProperty().divide(8));
-        square.heightProperty().bind(cb.heightProperty().divide(8));
+//        square.widthProperty().bind(cb.widthProperty().divide(8));
+//        square.heightProperty().bind(cb.heightProperty().divide(8));
 	}
 	
 	protected Square getSquare(Coord c) {
 		return squares[c.getX()][c.getY()];
 	}
 
-	public void recolorSquares(int[][] whiteMatrix, int[][] blackMatrix) {
+	public void recolorSquares(int[][] whiteMatrix, int[][] blackMatrix, boolean colored) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				squares[i][j].setWhiteAttacks(whiteMatrix[i][j]);
 				squares[i][j].setBlackAttacks(blackMatrix[i][j]);
 //				squares[i][j].setWhiteAttacks(2);
 //				squares[i][j].setBlackAttacks(4);
-				squares[i][j].recolor();
+				squares[i][j].recolor(colored);
 			}
 		}
 	}

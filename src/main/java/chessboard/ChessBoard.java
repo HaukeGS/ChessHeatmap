@@ -21,8 +21,6 @@ public class ChessBoard extends StackPane {
 	public ChessBoard() {		
 		boardPane = new BoardPane(this);
 		piecePane = new PiecePane(this);
-		piecePane.setGridLinesVisible(true);
-		boardPane.setGridLinesVisible(true);
 		initBoard();
 		initPieces();
 //		initPiecesFromFen("rn2k1r1/ppp1pp1p/3p2p1/5bn1/P7/2N2B2/1PPPPP2/2BNK1RR w Gkq - 4 11");
@@ -32,6 +30,8 @@ public class ChessBoard extends StackPane {
 	}
 
 	private void initBoard() {
+		piecePane.setGridLinesVisible(true);
+		boardPane.setGridLinesVisible(true);
 		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -45,26 +45,35 @@ public class ChessBoard extends StackPane {
 		}
 	}
 	
-	private void initPiecesFromFen(String fen) {
-		int x = 0;
-		int y = 0;
-		for (int i = 0; fen.charAt(i) != ' '; i++) {
-			if (fen.charAt(i) == '/') {
-				x = 0;
-				y++;
-				continue;
-			}
-			if (fen.charAt(i) <= '8' && fen.charAt(i) >= '0') {
-				int temp = Integer.parseInt(String.valueOf(fen.charAt(i)));
-				for (int j = 0; j < temp; j++) {
+	public void initPiecesFromFen(String fen) {
+		try {
+			
+			piecePane.clearPieces();
+			int x = 0;
+			int y = 0;
+			for (int i = 0; fen.charAt(i) != ' '; i++) {
+				if (fen.charAt(i) == '/') {
+					x = 0;
+					y++;
+					continue;
+				}
+				if (fen.charAt(i) <= '8' && fen.charAt(i) >= '0') {
+					int temp = Integer.parseInt(String.valueOf(fen.charAt(i)));
+					for (int j = 0; j < temp; j++) {
+						piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
+						x++;
+					}
+				} else {
 					piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
 					x++;
 				}
-			} else {
-				piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
-				x++;
 			}
+			piecePane.setGridLinesVisible(true);
+			boardPane.setGridLinesVisible(true);
+		} catch (Exception e) {
+			System.out.println("Invalid FEN String");
 		}
+		
 	}
 	
 	private Piece newPieceFromFen(char fen, Coord c) {
@@ -99,9 +108,6 @@ public class ChessBoard extends StackPane {
 	}
 	
 	private void initPieces() {
-//		ColumnConstraints colLabel = new ColumnConstraints();
-//		colLabel.setPercentWidth(8);
-//		boardPane.getColumnConstraints().add(colLabel);
 		
 		//init white pieces
 		piecePane.addPiece(new Rook(Player.WHITE, new Coord('a', 1), piecePane));
@@ -140,5 +146,9 @@ public class ChessBoard extends StackPane {
 			piecePane.addPiece(new Pawn(Player.WHITE, new Coord((char)x, 2), piecePane));
 			piecePane.addPiece(new Pawn(Player.BLACK, new Coord((char)x, 7), piecePane));
 		}
+	}
+	
+	public PiecePane getPiecePane() {
+		return piecePane;
 	}
 }

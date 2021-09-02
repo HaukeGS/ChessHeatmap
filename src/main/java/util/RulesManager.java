@@ -1,9 +1,5 @@
 package util;
 
-import java.util.List;
-
-import org.alcibiade.chess.rules.ChessRules;
-
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.File;
 import com.github.bhlangonijr.chesslib.Rank;
@@ -119,6 +115,7 @@ public class RulesManager {
 //		return isLegal;
 		if (board.legalMoves().contains(move))
 			return true;
+		System.out.println("Move is not legal");
 		return false;
 	}
 	

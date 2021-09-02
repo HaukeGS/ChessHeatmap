@@ -31,6 +31,7 @@ public abstract class Piece extends Rectangle {
 	protected List<Piece> attackers;
 	
 	public Piece(Player c, Coord coord, PiecePane pP)  {
+		super(100, 100);
 		this.color = c;
 		this.coord = coord;
 		this.piecePane = pP;
@@ -62,8 +63,8 @@ public abstract class Piece extends Rectangle {
 				if (util.GameLogic.getSelected() == null) { 				//if no piece is selected
 					if (!(piece instanceof Empty)) {   				//and an actual piece and no empty space is clicked
 						util.GameLogic.setSelected(piece);				//select the clicked piece
-						System.out.println(piece.getAttackedCoords());
-						System.out.println(piece.getAttackers());
+//						System.out.println(piece.getAttackedCoords());
+//						System.out.println(piece.getAttackers());
 //						System.out.println(util.GameLogic.getSelected());
 					} else {
 						
@@ -115,7 +116,7 @@ public abstract class Piece extends Rectangle {
 		return color;
 	}
 	
-	protected void clearAttackers() {
+	public void clearAttackers() {
 		attackers.clear();
 	}
 	

@@ -70,7 +70,7 @@ public class Square extends Rectangle {
 	}
 	
 	private void recolorBW() {
-		double range = 0.1;
+		double range = 0.0875;
 		int factor = attackCountWhite - attackCountBlack;
 		double colorValue = 0.50 + Math.max(-4, Math.min(4, factor)) * range;
 		setFill(new Color(colorValue,colorValue,colorValue,1.0));

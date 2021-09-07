@@ -1,13 +1,15 @@
 package pieces;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import chessboard.Coord;
-import chessboard.PiecePane;
-import pieces.Piece.Player;
+import util.GameLogic;
 
 public class Rook extends Piece {
 	
-	public Rook (Player c, Coord coord, PiecePane pP) {
-		super(c, coord, pP);
+	public Rook (Player c, Coord coord) {
+		super(c, coord);
 		if (c == Player.WHITE) {
 			setImage("file:res/Chesspieces/White_Rook.png");
 			setFenChar('R');
@@ -18,14 +20,14 @@ public class Rook extends Piece {
 	}
 	
 	@Override
-	public void setAttackedCoords() {
-		attackedCoords.clear();
+	public Set<Coord> getAttackedCoords() {
+		HashSet<Coord> result = new HashSet<Coord>();
 		Coord temp = getCoord();
 		while (true) {
 			try {
 				temp = new Coord(temp.getX(), temp.getY()-1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -35,8 +37,8 @@ public class Rook extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()-1, temp.getY());
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -46,8 +48,8 @@ public class Rook extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()+1, temp.getY());
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -57,14 +59,20 @@ public class Rook extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX(), temp.getY()+1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
 			}
 		}
-	
+		return result;
+	}
+
+	@Override
+	protected Set<Coord> getMovableCoords() {
+		// TODO Auto-generated method stub
+		return getAttackedCoords();
 	}
 
 }

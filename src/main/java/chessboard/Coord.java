@@ -51,4 +51,17 @@ public class Coord {
 	public String toChessString() {
 		return Character.toUpperCase(x) + Integer.toString(y);
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) 
+			return true;
+		
+		if (o instanceof Coord) {
+			Coord c = (Coord)o;
+			if (this.getX() == c.getX() && this.getY() == c.getY())
+				return true;
+		}
+		return false;
+	}
 }

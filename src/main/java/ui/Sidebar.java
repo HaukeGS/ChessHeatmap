@@ -2,17 +2,17 @@ package ui;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import pieces.Empty;
-import pieces.Piece;
+import javafx.scene.shape.Rectangle;
 import util.GameLogic;
 
 public class Sidebar extends VBox {
 	
 	CheckBox checkBoxColored;
+	Button reset;
+	Rectangle evalBar;
 
 	public Sidebar() {
 		super();
@@ -25,7 +25,13 @@ public class Sidebar extends VBox {
 			}
 			
 		});
+		this.reset = new Button("Reset") {
+			@Override
+			public void fire() {
+				GameLogic.resetBoard();
+			}
+		};
 		
-		getChildren().addAll(checkBoxColored);
+		getChildren().addAll(checkBoxColored, reset);
 	}
 }

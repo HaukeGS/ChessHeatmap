@@ -1,16 +1,17 @@
 package pieces;
 
 
-import javafx.scene.shape.Rectangle;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import chessboard.Coord;
-import chessboard.PiecePane;
-import javafx.scene.layout.HBox;
+import util.GameLogic;
 
 public class Bishop extends Piece {
 		
-	public Bishop (Player c, Coord coord, PiecePane pP) {
-		super(c, coord, pP);
+	public Bishop (Player c, Coord coord) {
+		super(c, coord);
 		if (c == Player.WHITE) {
 			setImage("file:res/Chesspieces/White_Bishop.png");
 			setFenChar('B');
@@ -22,15 +23,19 @@ public class Bishop extends Piece {
 	}
 	
 	@Override
-	public void setAttackedCoords() {
-		attackedCoords.clear();
+	protected Set<Coord> getMovableCoords() {
+		return getAttackedCoords();
+	}
+	
+	@Override
+	public Set<Coord> getAttackedCoords() {
+		HashSet<Coord> result = new HashSet<Coord>();
 		Coord temp = getCoord();
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()-1, temp.getY()-1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty)) {
-					System.out.println("check");
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty)) {
 					break;		
 				}		
 			} catch (IllegalArgumentException e) {
@@ -41,8 +46,8 @@ public class Bishop extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()-1, temp.getY()+1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -52,8 +57,8 @@ public class Bishop extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()+1, temp.getY()-1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;
 			} catch (IllegalArgumentException e) {
 				break;
@@ -63,13 +68,13 @@ public class Bishop extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()+1, temp.getY()+1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
 			}
 		}
-	
+		return result;
 	}
 }

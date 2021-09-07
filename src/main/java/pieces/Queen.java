@@ -1,13 +1,15 @@
 package pieces;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import chessboard.Coord;
-import chessboard.PiecePane;
-import pieces.Piece.Player;
+import util.GameLogic;
 
 public class Queen extends Piece {
 	
-	public Queen (Player c, Coord coord, PiecePane pP) {
-		super(c, coord, pP);
+	public Queen (Player c, Coord coord) {
+		super(c, coord);
 		if (c == Player.WHITE) {
 			setImage("file:res/Chesspieces/White_Queen.png");
 			setFenChar('Q');
@@ -18,14 +20,14 @@ public class Queen extends Piece {
 	}
 	
 	@Override
-	public void setAttackedCoords() {
-		attackedCoords.clear();
+	public Set<Coord> getAttackedCoords() {
+		HashSet<Coord> result = new HashSet<Coord>();
 		Coord temp = coord;
 		while (true) {
 			try {
 				temp = new Coord(temp.getX(), temp.getY()-1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -35,8 +37,8 @@ public class Queen extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()-1, temp.getY());
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -46,8 +48,8 @@ public class Queen extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()+1, temp.getY());
-					addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -57,8 +59,8 @@ public class Queen extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX(), temp.getY()+1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -68,8 +70,8 @@ public class Queen extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()-1, temp.getY()-1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -79,8 +81,8 @@ public class Queen extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()-1, temp.getY()+1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -90,8 +92,8 @@ public class Queen extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()+1, temp.getY()-1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
@@ -101,14 +103,19 @@ public class Queen extends Piece {
 		while (true) {
 			try {
 				temp = new Coord(temp.getX()+1, temp.getY()+1);
-				addAttackedCoord(temp);
-				if (!(piecePane.getPiece(temp) instanceof Empty))
+				result.add(temp);
+				if (!(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
 					break;				
 			} catch (IllegalArgumentException e) {
 				break;
 			}
 		}
-	
+		return result;
+	}
+
+	@Override
+	protected Set<Coord> getMovableCoords() {
+		return getAttackedCoords();
 	}
 
 }

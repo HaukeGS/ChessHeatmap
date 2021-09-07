@@ -1,13 +1,14 @@
 package pieces;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import chessboard.Coord;
-import chessboard.PiecePane;
-import pieces.Piece.Player;
 
 public class King extends Piece {
 	
-	public King (Player c, Coord coord, PiecePane pP) {
-		super(c, coord, pP);
+	public King (Player c, Coord coord) {
+		super(c, coord);
 		if (c == Player.WHITE) {
 			setImage("file:res/Chesspieces/White_King.png");
 			setFenChar('K');
@@ -16,51 +17,55 @@ public class King extends Piece {
 			setFenChar('k');
 		}
 	}
+	
+	protected Set<Coord> getMovableCoords() {
+		return getAttackedCoords();
+	}
 
 	@Override
-	public void setAttackedCoords() {
-		attackedCoords.clear();
+	public Set<Coord> getAttackedCoords() {
+		HashSet<Coord> result = new HashSet<Coord>();
 		Coord temp = getCoord();
 		try {
-			addAttackedCoord(new Coord(temp.getX(),temp.getY()+1));			
+			result.add(new Coord(temp.getX(),temp.getY()+1));			
 		} catch (IllegalArgumentException e) {
 			
 		}
 		try {
-			addAttackedCoord(new Coord(temp.getX()+1,temp.getY()));			
+			result.add(new Coord(temp.getX()+1,temp.getY()));			
 		} catch (IllegalArgumentException e) {
 			
 		}
 		try {
-			addAttackedCoord(new Coord(temp.getX(),temp.getY()-1));			
+			result.add(new Coord(temp.getX(),temp.getY()-1));			
 		} catch (IllegalArgumentException e) {
 			
 		}
 		try {
-			addAttackedCoord(new Coord(temp.getX()-1,temp.getY()));			
+			result.add(new Coord(temp.getX()-1,temp.getY()));			
 		} catch (IllegalArgumentException e) {
 			
 		}
 		try {
-			addAttackedCoord(new Coord(temp.getX()+1,temp.getY()+1));			
+			result.add(new Coord(temp.getX()+1,temp.getY()+1));			
 		} catch (IllegalArgumentException e) {
 			
 		}
 		try {
-			addAttackedCoord(new Coord(temp.getX()+1,temp.getY()-1));
+			result.add(new Coord(temp.getX()+1,temp.getY()-1));
 		} catch (IllegalArgumentException e) {
 			
 		}
 		try {
-			addAttackedCoord(new Coord(temp.getX()-1,temp.getY()+1));			
+			result.add(new Coord(temp.getX()-1,temp.getY()+1));			
 		} catch (IllegalArgumentException e) {
 			
 		}
 		try {
-			addAttackedCoord(new Coord(temp.getX()-1,temp.getY()-1));			
+			result.add(new Coord(temp.getX()-1,temp.getY()-1));			
 		} catch (IllegalArgumentException e) {
 			
 		}
-		
+		return result;
 	}
 }

@@ -2,6 +2,7 @@ package util;
 
 import chessboard.BoardPane;
 import chessboard.Coord;
+import chessboard.Move;
 import chessboard.PiecePane;
 import pieces.Empty;
 import pieces.King;
@@ -62,10 +63,11 @@ public final class GameLogic {
 				toMove = Player.BLACK;
 			else
 				toMove = Player.WHITE;
-			piecePane.clearAttackers();
+//			piecePane.clearAttackers();
 		}
 		
 		public static void recolorSquares() {
+			piecePane.clearAttackers();
 			boardPane.recolorSquares(piecePane.attackingMatrix(Player.WHITE), piecePane.attackingMatrix(Player.BLACK), colored);			
 		}
 		
@@ -81,26 +83,26 @@ public final class GameLogic {
 			selected = null;
 		}
 		
-		public static boolean isMoveLegal(Coord source, Coord target) {
-			try {
-				return rulesManager.isLegal(source, target);
-			} catch (Exception e) {
-				System.out.println(e.toString());
-			}
-			return true;
-		}
+//		public static boolean isMoveLegal(Coord source, Coord target) {
+//			try {
+//				return rulesManager.isLegal(source, target);
+//			} catch (Exception e) {
+//				System.out.println(e.toString());
+//			}
+//			return true;
+//		}
 		
 		public static boolean isMoveLegal(Piece target) {
 			if (selected == null)
 				return false;
-			return isMoveLegal(selected.getCoord(), target.getCoord());
+			return isMoveLegal(new Move(selected.getCoord(), target.getCoord(), selected));
 		}
 		
 		public static void movePiece(Piece target) {
 			if (selected == null)
 				throw new IllegalStateException("Crashed because you tried to move a piece without selecting one");
 			isMoveSpecial(selected.getCoord(), target.getCoord());
-			rulesManager.movePiece(selected.getCoord(), target.getCoord());
+//			rulesManager.movePiece(selected.getCoord(), target.getCoord());
 			piecePane.movePiece(selected.getCoord(), target.getCoord());
 			deselect();
 			recolorSquares();
@@ -278,5 +280,46 @@ public final class GameLogic {
 		
 		public static void setColored(boolean c) {
 			colored = c;
+		}
+
+		public static void resetBoard() {
+			toMove = Player.WHITE;
+			whiteCastleRights = CastleRights.BOTH;
+			blackCastleRights = CastleRights.BOTH;
+			emptyMoveCount = 0;
+			moveCount = 0;
+			recolorSquares();
+			rulesManager = new RulesManager();
+			rulesManager.getMoves();
+			piecePane.reset();
+			
+		}
+		
+		public static boolean isMoveLegal(Move move) {
+			Piece piece = move.getPiece();
+			if (piece.getColor() != toMove) { // right color?
+				System.out.println("Wrong Color");
+				return false;
+			}
+			if (!piece.canMoveTo(move.getTarget())) { // can the piece move to the target square?
+				System.out.println("Not attacking Square");
+				System.out.println(piece.getAttackedCoords());
+				System.out.println(move.getTarget());
+				return false;
+			}
+			if (piecePane.getPiece(move.getTarget()).getColor() == piece.getColor()) { // is the target square occupied by own piece?
+				System.out.println("Occupied by own piece");
+				return false;
+			}
+			if (piecePane.wouldKingBeInCheck(move)) {
+				System.out.println("King would be in check");
+				return false;
+			}
+			
+			return true;
+		}
+		
+		public static PiecePane getPiecePane() {
+			return piecePane;
 		}
 }

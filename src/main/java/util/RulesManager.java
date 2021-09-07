@@ -31,7 +31,7 @@ public class RulesManager {
 	
 	private Square coordToSquare(Coord c) {
 		Square s = Square.fromValue(c.toChessString());
-		System.out.println(s);
+//		System.out.println(s);
 		return s;
 	}
 	

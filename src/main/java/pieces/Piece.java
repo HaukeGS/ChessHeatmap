@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 import chessboard.Coord;
-import chessboard.PiecePane;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import util.GameLogic;
 
 public abstract class Piece extends Rectangle {
 	public enum Player {
@@ -26,17 +25,15 @@ public abstract class Piece extends Rectangle {
 	private Player color;
 	private char fenChar;
 	protected Coord coord;
-	protected Set<Coord> attackedCoords;
-	protected PiecePane piecePane;
+	protected boolean hasMoved;
 	protected List<Piece> attackers;
 	
-	public Piece(Player c, Coord coord, PiecePane pP)  {
+	public Piece(Player c, Coord coord)  {
 		super(100, 100);
 		this.color = c;
 		this.coord = coord;
-		this.piecePane = pP;
-		this.attackedCoords = new HashSet<Coord>();
 		this.attackers = new ArrayList<>();
+		this.hasMoved = false;
 		createEvents();
 	}
 
@@ -63,9 +60,6 @@ public abstract class Piece extends Rectangle {
 				if (util.GameLogic.getSelected() == null) { 				//if no piece is selected
 					if (!(piece instanceof Empty)) {   				//and an actual piece and no empty space is clicked
 						util.GameLogic.setSelected(piece);				//select the clicked piece
-//						System.out.println(piece.getAttackedCoords());
-//						System.out.println(piece.getAttackers());
-//						System.out.println(util.GameLogic.getSelected());
 					} else {
 						
 					}
@@ -87,29 +81,29 @@ public abstract class Piece extends Rectangle {
 		return color.toString() + " " + this.getClass();
 	}
 	
+	public boolean canMoveTo(Coord c) {
+		for (Coord ca : getMovableCoords()) {
+			if (ca.equals(c))
+				return true;
+		}
+		return false;
+	}
+	
 	public Coord getCoord() {
 		return coord;
 	}
 	
 	public void setCoord(Coord c) {
 		this.coord = c;
-		setAttackedCoords();
+//		setAttackedCoords();
 	}
 	
-	public abstract void setAttackedCoords();
+	public abstract Set<Coord> getAttackedCoords();
 	
-	protected void addAttacker(Piece p) {
+	protected abstract Set<Coord> getMovableCoords();
+	
+	public void addAttacker(Piece p) {
 		attackers.add(p);
-	}
-	
-	public void addAttackedCoord(Coord c) {
-		attackedCoords.add(c);
-		piecePane.getPiece(c).addAttacker(this);
-	}
-	
-	public Set<Coord> getAttackedCoords() {
-		setAttackedCoords();
-		return attackedCoords;
 	}
 	
 	public Player getColor() {

@@ -16,33 +16,12 @@ public class Square extends Rectangle {
 		super(width, height);
 		this.color = c;
 		setFill(c);
-//		registerEvents();
 		setPickOnBounds(true);
 		this.coord = coord;
-//		highlight();
 	}
 	
-//	private void registerEvents() {
-//		
-//		EventHandler<MouseEvent> onMouseClicked = new EventHandler<MouseEvent>() {
-//
-//			@Override
-//			public void handle(MouseEvent arg0) {
-//				setFill(Color.BLACK);
-//			}			
-//		};
-//		
-//		addEventFilter(MouseEvent.MOUSE_CLICKED, onMouseClicked);
-//		
-//	}
-	
 	public void highlight () {
-//		Circle circle = new Circle(25, Color.GRAY);
-//		union(this, circle);
-//		circle.radiusProperty().bind(this.widthProperty().divide(4));
-//		circle.centerXProperty().bind(this.widthProperty().divide(2));
-//		circle.centerYProperty().bind(this.widthProperty().divide(2));
-		setFill(Color.BLACK);
+		setFill(Color.GOLD);
 	}
 	
 	public void recolor(boolean colored) {
@@ -53,18 +32,11 @@ public class Square extends Rectangle {
 	}
 	
 	private void recolorColored() {
-//		if (attackCountBlack == attackCountWhite) {
-//			setFill(new Color (1.0, 1.0, 0, 1.0));
-//			return;
-//		} else if (attackCountBlack > attackCountWhite) {
-//			
-//		} else if (attackCountBlack < attackCountWhite) {
-//			
-//		}
 		double range = 0.125;
 		int difference = attackCountWhite - attackCountBlack;
 		double colorValue = 0.50 + Math.max(-4, Math.min(4, difference)) * range;
-		setFill(new Color(1-colorValue,colorValue,0,1.0));
+		color = new Color(1-colorValue,colorValue,0,1.0);
+		setFill(color);
 		
 		
 	}
@@ -73,7 +45,8 @@ public class Square extends Rectangle {
 		double range = 0.0875;
 		int factor = attackCountWhite - attackCountBlack;
 		double colorValue = 0.50 + Math.max(-4, Math.min(4, factor)) * range;
-		setFill(new Color(colorValue,colorValue,colorValue,1.0));
+		color = new Color(colorValue,colorValue,colorValue,1.0);
+		setFill(color);
 	}
 	
 	public Coord getCoord() {

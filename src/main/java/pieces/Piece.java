@@ -1,19 +1,19 @@
 package pieces;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import chessboard.Coord;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import util.GameLogic;
 
-public abstract class Piece extends Rectangle {
+public abstract class Piece extends Rectangle implements Cloneable {
 	public enum Player {
 		WHITE,
 		BLACK,
@@ -51,11 +51,8 @@ public abstract class Piece extends Rectangle {
 	}
 	
 	private void createEvents() {
-		
-		EventHandler<MouseEvent> onMouseClicked = new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
+		this.setOnMouseClicked(event -> {
+			if (event.getButton() == MouseButton.PRIMARY) { 			//left clicked piece
 				Piece piece = (Piece) event.getSource();			//clicked piece
 				if (util.GameLogic.getSelected() == null) { 				//if no piece is selected
 					if (!(piece instanceof Empty)) {   				//and an actual piece and no empty space is clicked
@@ -70,10 +67,14 @@ public abstract class Piece extends Rectangle {
 						util.GameLogic.deselect();
 					}
 				}
-			}			
-		};
-		
-		addEventFilter(MouseEvent.MOUSE_CLICKED, onMouseClicked);
+			} else if (event.getButton() == MouseButton.SECONDARY) {	//right clicked piece
+				if (!GameLogic.getHighlightingAttackers()) {
+					GameLogic.highlightAttackers(getAttackers());					
+				} else {
+					GameLogic.dehighlightAttackers(getAttackers());					
+				}
+			}
+		});
 	}
 	
 	@Override

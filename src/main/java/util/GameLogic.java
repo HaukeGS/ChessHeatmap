@@ -1,5 +1,7 @@
 package util;
 
+import java.util.List;
+
 import chessboard.BoardPane;
 import chessboard.Coord;
 import chessboard.Move;
@@ -23,6 +25,7 @@ public final class GameLogic {
 		private static Piece selected;
 		private static RulesManager rulesManager;
 		private static boolean colored;
+		private static boolean highlightingAttackers;
 		
 		private static enum CastleRights {
 			BOTH,
@@ -41,6 +44,7 @@ public final class GameLogic {
 			emptyMoveCount = 0;
 			moveCount = 0;
 			colored = false;
+			highlightingAttackers = false;
 			recolorSquares();
 			rulesManager = new RulesManager();
 			rulesManager.getMoves();
@@ -67,7 +71,7 @@ public final class GameLogic {
 		}
 		
 		public static void recolorSquares() {
-			piecePane.clearAttackers();
+			piecePane.setAttackersForAllPieces();
 			boardPane.recolorSquares(piecePane.attackingMatrix(Player.WHITE), piecePane.attackingMatrix(Player.BLACK), colored);			
 		}
 		
@@ -288,10 +292,10 @@ public final class GameLogic {
 			blackCastleRights = CastleRights.BOTH;
 			emptyMoveCount = 0;
 			moveCount = 0;
-			recolorSquares();
 			rulesManager = new RulesManager();
 			rulesManager.getMoves();
 			piecePane.reset();
+			recolorSquares();
 			
 		}
 		
@@ -321,5 +325,24 @@ public final class GameLogic {
 		
 		public static PiecePane getPiecePane() {
 			return piecePane;
+		}
+		
+		public static void highlightAttackers(List<Piece> list) {
+			for (Piece p : list) {
+				boardPane.highlightSquare(p.getCoord());
+				highlightingAttackers = true;
+			}
+		}
+		
+		public static void dehighlightAttackers(List<Piece> list) {
+			System.out.println(list);
+			for (Piece p : list) {
+				boardPane.dehighlightSquare(p.getCoord());
+				highlightingAttackers = false;
+			}
+		}
+		
+		public static boolean getHighlightingAttackers() {
+			return highlightingAttackers;
 		}
 }

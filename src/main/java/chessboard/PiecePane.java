@@ -121,6 +121,8 @@ public class PiecePane extends GridPane {
 	public void movePiece(Coord sourceCoord, Coord targetCoord) {
 		Piece source = pieces[sourceCoord.getX()][sourceCoord.getY()];
 		Piece target = pieces[targetCoord.getX()][targetCoord.getY()];
+		System.out.println(source + " to " + target);
+		
 //		if (!(target instanceof Empty))
 		getChildren().remove(target);
 		getChildren().remove(source);
@@ -157,7 +159,7 @@ public class PiecePane extends GridPane {
 		return result;
 	}
 	
-	private void setAttackersForAllPieces() {
+	public void setAttackersForAllPieces() {
 		clearAttackers();
 		for (Piece[] pp : pieces) {
 			for (Piece p : pp) {
@@ -173,20 +175,26 @@ public class PiecePane extends GridPane {
 		Piece targetPiece = getPiece(move.getTarget());
 		Piece sourcePiece = getPiece(move.getSource());
 		
-		Piece[][] piecesCloned = pieces.clone();
-		Piece[][] piecesTemp = pieces;
+//		Piece[][] piecesCloned = pieces.clone();
+//		Piece[][] piecesTemp = pieces;
+//		
+//		piecesCloned[move.getTarget().getX()][move.getTarget().getY()] = sourcePiece;
+//		piecesCloned[move.getSource().getX()][move.getTarget().getY()] = new Empty(move.getSource());
 		
-		piecesCloned[move.getTarget().getX()][move.getTarget().getY()] = sourcePiece;
-		piecesCloned[move.getSource().getX()][move.getTarget().getY()] = new Empty(move.getSource());
+//		pieces = piecesCloned;
 		
-		pieces = piecesCloned;
+		pieces[move.getTarget().getX()][move.getTarget().getY()] = sourcePiece;
+		pieces[move.getSource().getX()][move.getSource().getY()] = new Empty(move.getSource());
 		
 		
 		setAttackersForAllPieces();
 		
 		boolean result = kingInCheck(move.getPiece().getColor());
 		
-		pieces = piecesTemp;
+		pieces[move.getTarget().getX()][move.getTarget().getY()] = targetPiece;
+		pieces[move.getSource().getX()][move.getSource().getY()] = sourcePiece;
+		
+		setAttackersForAllPieces();
 		
 		return result;
 	}

@@ -18,8 +18,6 @@ public class BoardPane extends GridPane {
 		Square square = new Square (100, 100, coord, c);
 		squares[coord.getX()][coord.getY()] = square;
 		add(square, coord.getX(), coord.getY());
-//        square.widthProperty().bind(cb.widthProperty().divide(8));
-//        square.heightProperty().bind(cb.heightProperty().divide(8));
 	}
 	
 	protected Square getSquare(Coord c) {
@@ -31,19 +29,9 @@ public class BoardPane extends GridPane {
 			for (int j = 0; j < 8; j++) {
 				squares[i][j].setWhiteAttacks(whiteMatrix[i][j]);
 				squares[i][j].setBlackAttacks(blackMatrix[i][j]);
-//				squares[i][j].setWhiteAttacks(2);
-//				squares[i][j].setBlackAttacks(4);
 				squares[i][j].recolor(colored);
 			}
 		}
-	}
-	
-	protected void highlightSquare(char x, int y) {
-		hightlightSquare(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
-	}
-	
-	protected void removeSquare(char x, int y) {
-		removeSquare(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
 	}
 	
 	protected void removeSquare(int x, int y) {
@@ -52,16 +40,12 @@ public class BoardPane extends GridPane {
 		squares[x][y] = null;
 	}
 	
-	protected void hightlightSquare(int x, int y) {
-		squares[x][y].highlight();		
+	public void highlightSquare(Coord c) {
+		squares[c.getX()][c.getY()].highlight();		
 	}
 	
-	protected void dehighlightSquare(char x, int y) {
-		dehighlightSquare(ChessUtil.asciiOffset(x), ChessUtil.inverseIndex(y));
-	}
-	
-	protected void dehighlightSquare(int x, int y) {
-		squares[x][y].dehighlight();
+	public void dehighlightSquare(Coord c) {
+		squares[c.getX()][c.getY()].dehighlight();
 	}
 
 }

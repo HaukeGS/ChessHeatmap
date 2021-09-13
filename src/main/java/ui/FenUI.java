@@ -1,6 +1,7 @@
 package ui;
 
 import chessboard.ChessBoard;
+import util.GameLogic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -29,7 +30,7 @@ public class FenUI extends HBox {
 		EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				 cb.initPiecesFromFen(textField.getText());
+				 GameLogic.initFromFen(textField.getText());
 			}
 		};
 		button.setOnAction(buttonHandler);

@@ -21,7 +21,7 @@ public class Sidebar extends VBox {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				GameLogic.setColored(newValue);
-				GameLogic.recolorSquares();
+				GameLogic.updateBoard();
 			}
 			
 		});

@@ -69,9 +69,9 @@ public abstract class Piece extends Rectangle implements Cloneable {
 				}
 			} else if (event.getButton() == MouseButton.SECONDARY) {	//right clicked piece
 				if (!GameLogic.getHighlightingAttackers()) {
-					GameLogic.highlightAttackers(getAttackers());					
+					GameLogic.highlightAttackers(getAttackers());
 				} else {
-					GameLogic.dehighlightAttackers(getAttackers());					
+					GameLogic.dehighlightAttackers();					
 				}
 			}
 		});

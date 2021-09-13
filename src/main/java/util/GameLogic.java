@@ -6,10 +6,14 @@ import chessboard.BoardPane;
 import chessboard.Coord;
 import chessboard.Move;
 import chessboard.PiecePane;
+import pieces.Bishop;
 import pieces.Empty;
 import pieces.King;
+import pieces.Knight;
 import pieces.Pawn;
 import pieces.Piece;
+import pieces.Queen;
+import pieces.Rook;
 import pieces.Piece.Player;
 
 public final class GameLogic {
@@ -23,7 +27,6 @@ public final class GameLogic {
 		private static int emptyMoveCount;
 		private static int moveCount;
 		private static Piece selected;
-		private static RulesManager rulesManager;
 		private static boolean colored;
 		private static boolean highlightingAttackers;
 		
@@ -45,15 +48,11 @@ public final class GameLogic {
 			moveCount = 0;
 			colored = false;
 			highlightingAttackers = false;
-			recolorSquares();
-			rulesManager = new RulesManager();
-			rulesManager.getMoves();
+			updateBoard();
 //			System.out.println(stockfish.startEngine());
 		}
 		
 		public static void initFromFen(PiecePane pP, BoardPane bP, String fen) {
-			rulesManager = new RulesManager();
-			rulesManager.importFen(fen);
 			piecePane = pP;
 			boardPane = bP;
 			if (fen.contains("w"))
@@ -62,12 +61,113 @@ public final class GameLogic {
 				toMove = Player.BLACK;
 		}
 		
+		public static void initFromFen(String fen) {
+			String backup = generateFenString();
+			try {
+				
+				piecePane.clearPieces();
+				int x = 0;
+				int y = 0;
+				for (int i = 0; fen.charAt(i) != ' '; i++) {
+					if (fen.charAt(i) == '/') {
+						x = 0;
+						y++;
+						continue;
+					}
+					if (fen.charAt(i) <= '8' && fen.charAt(i) >= '0') {
+						int temp = Integer.parseInt(String.valueOf(fen.charAt(i)));
+						for (int j = 0; j < temp; j++) {
+							piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
+							x++;
+						}
+					} else {
+						piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
+						x++;
+					}
+				}
+				piecePane.setGridLinesVisible(true);
+				boardPane.setGridLinesVisible(true);
+				updateBoard();
+			} catch (Exception e) {
+				System.out.println("Invalid FEN String");
+				initBackupFen(backup);
+			}			
+		}
+		
+		private static void initBackupFen(String fen) {
+			try {
+				
+				piecePane.clearPieces();
+				int x = 0;
+				int y = 0;
+				for (int i = 0; fen.charAt(i) != ' '; i++) {
+					if (fen.charAt(i) == '/') {
+						x = 0;
+						y++;
+						continue;
+					}
+					if (fen.charAt(i) <= '8' && fen.charAt(i) >= '0') {
+						int temp = Integer.parseInt(String.valueOf(fen.charAt(i)));
+						for (int j = 0; j < temp; j++) {
+							piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
+							x++;
+						}
+					} else {
+						piecePane.addPiece(newPieceFromFen(fen.charAt(i), new Coord(x,y)));
+						x++;
+					}
+				}
+				piecePane.setGridLinesVisible(true);
+				boardPane.setGridLinesVisible(true);
+			} catch (Exception e) {
+				System.out.println("Invalid FEN String");
+			}
+			
+		}
+		
+		private static Piece newPieceFromFen(char fen, Coord c) {
+			switch(fen) {
+			case 'b':
+				return new Bishop(Player.BLACK, c);
+			case 'k':
+				return new King(Player.BLACK, c);
+			case 'n':
+				return new Knight(Player.BLACK, c);
+			case 'p':
+				return new Pawn(Player.BLACK, c);
+			case 'q':
+				return new Queen(Player.BLACK, c);
+			case 'r':
+				return new Rook(Player.BLACK, c);
+			case 'B':
+				return new Bishop(Player.WHITE, c);
+			case 'K':
+				return new King(Player.WHITE, c);
+			case 'N':
+				return new Knight(Player.WHITE, c);
+			case 'P':
+				return new Pawn(Player.WHITE, c);
+			case 'Q':
+				return new Queen(Player.WHITE, c);
+			case 'R':
+				return new Rook(Player.WHITE, c);
+			default:
+				return new Empty(c);
+			}
+		}
+		
 		private static void alternateToMove() {
 			if (toMove == Player.WHITE)
 				toMove = Player.BLACK;
 			else
 				toMove = Player.WHITE;
 //			piecePane.clearAttackers();
+		}
+		
+		public static void updateBoard() {
+			deselect();
+			recolorSquares();
+			highlightKingInCheck();
 		}
 		
 		public static void recolorSquares() {
@@ -109,7 +209,7 @@ public final class GameLogic {
 //			rulesManager.movePiece(selected.getCoord(), target.getCoord());
 			piecePane.movePiece(selected.getCoord(), target.getCoord());
 			deselect();
-			recolorSquares();
+			updateBoard();
 			alternateToMove();
 		}
 		
@@ -216,6 +316,7 @@ public final class GameLogic {
 		
 		public static String generateFenString() {
 			Piece[][] pieces = piecePane.getPieces();
+			System.out.println(pieces);
 			
 			String result = "";
 			
@@ -292,11 +393,8 @@ public final class GameLogic {
 			blackCastleRights = CastleRights.BOTH;
 			emptyMoveCount = 0;
 			moveCount = 0;
-			rulesManager = new RulesManager();
-			rulesManager.getMoves();
 			piecePane.reset();
-			recolorSquares();
-			
+			updateBoard();			
 		}
 		
 		public static boolean isMoveLegal(Move move) {
@@ -329,17 +427,27 @@ public final class GameLogic {
 		
 		public static void highlightAttackers(List<Piece> list) {
 			for (Piece p : list) {
-				boardPane.highlightSquare(p.getCoord());
+				boardPane.highlightSquareAsAttacker(p.getCoord());
 				highlightingAttackers = true;
 			}
 		}
 		
-		public static void dehighlightAttackers(List<Piece> list) {
-			System.out.println(list);
-			for (Piece p : list) {
-				boardPane.dehighlightSquare(p.getCoord());
-				highlightingAttackers = false;
+		private static void highlightKingInCheck() {
+			if (piecePane.kingInCheck(Player.BLACK)) {
+				boardPane.highlightKingInCheck(piecePane.getKing(Player.BLACK).getCoord());
+			} else {
+				boardPane.dehighlightKingInCheck(piecePane.getKing(Player.BLACK).getCoord());				
 			}
+			if (piecePane.kingInCheck(Player.WHITE)) {
+				boardPane.highlightKingInCheck(piecePane.getKing(Player.WHITE).getCoord());
+			} else {
+				boardPane.dehighlightKingInCheck(piecePane.getKing(Player.WHITE).getCoord());
+			}
+		}
+		
+		public static void dehighlightAttackers() {
+			boardPane.dehighlightAttackersSquares();
+			highlightingAttackers = false;
 		}
 		
 		public static boolean getHighlightingAttackers() {

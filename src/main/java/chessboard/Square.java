@@ -1,7 +1,5 @@
 package chessboard;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -11,6 +9,7 @@ public class Square extends Rectangle {
 	private Color color;
 	private int attackCountWhite;
 	private int attackCountBlack;
+	private boolean inCheck;
 	
 	public Square (double width, double height, Coord coord, Color c) {
 		super(width, height);
@@ -18,10 +17,20 @@ public class Square extends Rectangle {
 		setFill(c);
 		setPickOnBounds(true);
 		this.coord = coord;
+		this.inCheck = false;
 	}
 	
-	public void highlight () {
+	public void highlightAsAttacker () {
 		setFill(Color.GOLD);
+	}
+
+	public void highlightAsInCheck() {
+		setFill(Color.PURPLE);
+		inCheck = true;
+	}
+	
+	public void setInCheckFalse() {
+		inCheck = false;
 	}
 	
 	public void recolor(boolean colored) {
@@ -54,7 +63,10 @@ public class Square extends Rectangle {
 	}
 	
 	public void dehighlight() {
-		setFill(color);
+		if (inCheck)
+			highlightAsInCheck();
+		else
+			setFill(color);
 	}
 	
 	public Color getColor() {

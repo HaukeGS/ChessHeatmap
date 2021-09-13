@@ -40,12 +40,25 @@ public class BoardPane extends GridPane {
 		squares[x][y] = null;
 	}
 	
-	public void highlightSquare(Coord c) {
-		squares[c.getX()][c.getY()].highlight();		
+	public void highlightSquareAsAttacker(Coord c) {
+		squares[c.getX()][c.getY()].highlightAsAttacker();		
 	}
 	
-	public void dehighlightSquare(Coord c) {
-		squares[c.getX()][c.getY()].dehighlight();
+	public void highlightKingInCheck(Coord c) {
+		squares[c.getX()][c.getY()].highlightAsInCheck();
+		
+	}
+	
+	public void dehighlightKingInCheck(Coord c) {
+		squares[c.getX()][c.getY()].setInCheckFalse();;
+	}
+	
+	public void dehighlightAttackersSquares() {
+		for (Square[] ss : squares) {
+			for (Square s : ss) {
+				s.dehighlight();
+			}
+		}
 	}
 
 }

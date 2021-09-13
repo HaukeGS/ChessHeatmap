@@ -19,14 +19,12 @@ import pieces.Rook;
 public class PiecePane extends GridPane {
 	
 	private Piece[][] pieces;
-	private final ChessBoard cb;
 	
 	//Do NOT use add to add pieces to the PiecePane. Use addPiece instead!
 	public PiecePane(ChessBoard cb) {		
 		pieces = new Piece[8][8];
 		clearPieces();
 		
-		this.cb = cb;
 		initConstraints();
 		initPieces();
 	}
@@ -76,7 +74,7 @@ public class PiecePane extends GridPane {
 		}
 	}
 	
-	void clearPieces() {
+	public void clearPieces() {
 		setGridLinesVisible(false);
 		getChildren().clear();
 		setGridLinesVisible(true);
@@ -103,7 +101,7 @@ public class PiecePane extends GridPane {
 		}
 	}
 	
-	protected void addPiece(Piece piece) {
+	public void addPiece(Piece piece) {
 		pieces[piece.getCoord().getX()][piece.getCoord().getY()] = piece;
 		add(piece, piece.getCoord().getX(), piece.getCoord().getY(), 1 ,1);
 //		piece.heightProperty().bind(cb.heightProperty().divide(8));
@@ -199,7 +197,7 @@ public class PiecePane extends GridPane {
 		return result;
 	}
 	
-	private boolean kingInCheck(Player c) {
+	public boolean kingInCheck(Player c) {
 		for (Piece p : getKing(c).getAttackers()) {
 			if (!p.getColor().equals(c))
 				return true;
@@ -207,7 +205,7 @@ public class PiecePane extends GridPane {
 		return false;
 	}
 	
-	private Piece getKing(Player c) {
+	public Piece getKing(Player c) {
 		for (Piece p[] : pieces) {
 			for (Piece piece : p) {
 				if (piece instanceof King && piece.getColor() == c)

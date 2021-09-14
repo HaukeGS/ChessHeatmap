@@ -50,7 +50,7 @@ public Pawn (Player c, Coord coord) {
 	}
 
 	@Override
-	protected Set<Coord> getMovableCoords() {
+	public Set<Coord> getMovableCoords() {
 		HashSet<Coord> result = new HashSet<Coord>();
 		Coord temp = getCoord();
 		if (getColor() == Player.WHITE) {

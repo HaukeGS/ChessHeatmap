@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import chessboard.Coord;
+import util.GameLogic;
 
 public class King extends Piece {
 	
@@ -18,8 +19,15 @@ public class King extends Piece {
 		}
 	}
 	
-	protected Set<Coord> getMovableCoords() {
-		return getAttackedCoords();
+	public Set<Coord> getMovableCoords() {
+		Set<Coord> result = getAttackedCoords();
+		if (GameLogic.canCastleKingSide(getColor())) {
+			result.add(new Coord(getCoord().getX()+2, getCoord().getY()));
+		}
+		if (GameLogic.canCastleQueenSide(getColor())) {
+			result.add(new Coord(getCoord().getX()-2, getCoord().getY()));			
+		}
+		return result;
 	}
 
 	@Override

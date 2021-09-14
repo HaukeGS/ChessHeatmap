@@ -39,7 +39,9 @@ public class ChessBoard extends StackPane {
 					c = Color.WHITE;
 				else
 					c = Color.BROWN;
-				boardPane.addSquare(new Coord(i, j), c);
+				Coord coord = new Coord(i, j);
+				boardPane.addSquare(coord, c);
+				boardPane.addHighlight(coord);
 			}
 		}
 	}

@@ -28,6 +28,11 @@ public class Square extends Rectangle {
 		setFill(Color.PURPLE);
 		inCheck = true;
 	}
+
+	public void highlightCheckmate() {
+		setFill(Color.ANTIQUEWHITE);
+		inCheck = true;
+	}
 	
 	public void setInCheckFalse() {
 		inCheck = false;
@@ -45,9 +50,7 @@ public class Square extends Rectangle {
 		int difference = attackCountWhite - attackCountBlack;
 		double colorValue = 0.50 + Math.max(-4, Math.min(4, difference)) * range;
 		color = new Color(1-colorValue,colorValue,0,1.0);
-		setFill(color);
-		
-		
+		setFill(color);		
 	}
 	
 	private void recolorBW() {

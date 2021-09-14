@@ -21,7 +21,7 @@ public class Empty extends Piece {
 	}
 
 	@Override
-	protected Set<Coord> getMovableCoords() {
+	public Set<Coord> getMovableCoords() {
 		// TODO Auto-generated method stub
 		return getAttackedCoords();
 	}

@@ -27,7 +27,7 @@ public class PiecePane extends GridPane {
 	private Piece[][] pieces;
 
 	// Do NOT use add to add pieces to the PiecePane. Use addPiece instead!
-	public PiecePane(ChessBoard cb) {
+	public PiecePane() {
 		pieces = new Piece[8][8];
 		clearPieces();
 
@@ -351,5 +351,13 @@ public class PiecePane extends GridPane {
 		if (!(getPiece(new Coord('b', 8)) instanceof Empty))
 			return false;
 		return true;
+	}
+	
+	public void clearEnpassant() {
+		for (Piece[] pp : pieces) {
+			for (Piece p : pp) {
+				p.setEnpassant(false);
+			}
+		}
 	}
 }

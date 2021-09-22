@@ -12,12 +12,10 @@ public class BoardPane extends GridPane {
 
 	Highlight[][] highlights;
 	Square[][] squares;
-	ChessBoard cb;
 
-	public BoardPane(ChessBoard cb) {
+	public BoardPane() {
 		squares = new Square[8][8];
 		highlights = new Highlight[8][8];
-		this.cb = cb;
 		initConstraints();
 	}
 

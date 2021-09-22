@@ -22,6 +22,7 @@ public abstract class Piece extends Rectangle {
 	private char fenChar;
 	protected Coord coord;
 	protected boolean hasMoved;
+	private boolean enpassant;
 	protected List<Piece> attackers;
 
 	public Piece(Player c, Coord coord) {
@@ -30,6 +31,7 @@ public abstract class Piece extends Rectangle {
 		this.coord = coord;
 		this.attackers = new ArrayList<>();
 		this.hasMoved = false;
+		this.enpassant = false;
 		createEvents();
 	}
 
@@ -117,6 +119,14 @@ public abstract class Piece extends Rectangle {
 	
 	public void setHasMoved(boolean b) {
 		hasMoved = b;
+	}
+	
+	public void setEnpassant(boolean b) {
+		enpassant = b;
+	}
+	
+	public boolean getEnpassant() {
+		return enpassant;
 	}
 
 }

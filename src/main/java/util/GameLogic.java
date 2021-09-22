@@ -221,11 +221,24 @@ public final class GameLogic {
 		updateCastleRights(move);
 		alternateToMove();
 		move.setFen(generateFenString());
+		concatMoveList();
 		moves.add(move);
 		if (move.getPiece().getColor() == Player.BLACK)
 			blacksMoves.add(move);
 		else
 			whitesMoves.add(move);
+	}
+	
+	private static void concatMoveList() {
+		String fen = generateFenString();
+		boolean b = false;
+		for (int i = 0; i < moves.size(); i++) {
+			Move m = moves.get(i);
+			if (m.getFen().equals(fen))
+				b = true;
+			if (b)
+				moves.remove(m);
+		}
 	}
 
 	public static Player getOpponent(Move move) {
@@ -235,6 +248,7 @@ public final class GameLogic {
 	}
 
 	private static void performSpecialMove(Move move) {
+		piecePane.clearEnpassant();
 		Player opponent = getOpponent(move);
 		if (piecePane.isKingInCheck(opponent))
 			move.setCheck(true);
@@ -249,6 +263,26 @@ public final class GameLogic {
 					piecePane.getPiece(new Coord(move.getTarget().getX() - 2, move.getTarget().getY()))));
 			move.setQueenSideCastles(true);
 		}
+		if (isEnPassant(move)) {
+			if (move.getPiece().getColor() == Player.WHITE)
+				piecePane.removePiece(new Coord(move.getTarget().getX(), move.getTarget().getY() + 1));
+			else
+				piecePane.removePiece(new Coord(move.getTarget().getX(), move.getTarget().getY() - 1));
+				
+		}
+		if (isEnablingEnpassant(move)) {
+			if (move.getPiece().getColor() == Player.WHITE)
+				piecePane.getPiece(new Coord(move.getTarget().getX(), move.getTarget().getY() + 1)).setEnpassant(true);
+			else
+				piecePane.getPiece(new Coord(move.getTarget().getX(), move.getTarget().getY() - 1)).setEnpassant(true);				
+		}
+			
+	}
+	
+	private static boolean isEnablingEnpassant(Move move) {
+		if (move.getPiece() instanceof Pawn && Math.abs(move.getSource().getY() - move.getTarget().getY()) >= 2)
+			return true;
+		return false;
 	}
 
 	public static boolean isMoveKingSideCastles(Move move) {
@@ -263,7 +297,7 @@ public final class GameLogic {
 		return false;
 	}
 
-	public static boolean isEnPessant(Move move) {
+	public static boolean isEnPassant(Move move) {
 		if (move.getPiece() instanceof Pawn && move.getSource().getX() != move.getTarget().getX()
 				&& piecePane.getPiece(move.getTarget()) instanceof Empty)
 			return true;

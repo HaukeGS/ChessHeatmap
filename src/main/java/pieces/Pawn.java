@@ -57,7 +57,7 @@ public Pawn (Player c, Coord coord) {
 			//attacking squares
 			try {
 				temp = new Coord(temp.getX()-1, temp.getY()-1);
-				if (GameLogic.getPiecePane().getPiece(temp).getColor() != getColor() && !(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
+				if ((GameLogic.getPiecePane().getPiece(temp).getColor() != getColor() && !(GameLogic.getPiecePane().getPiece(temp) instanceof Empty)) ||  GameLogic.getPiecePane().getPiece(temp).getEnpassant())
 					result.add(temp);
 			} catch (IllegalArgumentException e) {
 				
@@ -65,7 +65,7 @@ public Pawn (Player c, Coord coord) {
 			temp = getCoord();
 			try {
 				temp = new Coord(temp.getX()+1, temp.getY()-1);
-				if (GameLogic.getPiecePane().getPiece(temp).getColor() != getColor() && !(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
+				if ((GameLogic.getPiecePane().getPiece(temp).getColor() != getColor() && !(GameLogic.getPiecePane().getPiece(temp) instanceof Empty)) ||  GameLogic.getPiecePane().getPiece(temp).getEnpassant())
 					result.add(temp);			
 			} catch (IllegalArgumentException e) {
 				
@@ -89,7 +89,7 @@ public Pawn (Player c, Coord coord) {
 			temp = getCoord();
 			try {
 				temp = new Coord(temp.getX()-1, temp.getY()+1);
-				if (GameLogic.getPiecePane().getPiece(temp).getColor() != getColor() && !(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
+				if ((GameLogic.getPiecePane().getPiece(temp).getColor() != getColor() && !(GameLogic.getPiecePane().getPiece(temp) instanceof Empty)) ||  GameLogic.getPiecePane().getPiece(temp).getEnpassant())
 					result.add(temp);
 			} catch (IllegalArgumentException e) {
 				
@@ -97,8 +97,8 @@ public Pawn (Player c, Coord coord) {
 			temp = getCoord();
 			try {
 				temp = new Coord(temp.getX()+1, temp.getY()+1);
-				if (GameLogic.getPiecePane().getPiece(temp).getColor() != getColor() && !(GameLogic.getPiecePane().getPiece(temp) instanceof Empty))
-					result.add(temp);			
+				if ((GameLogic.getPiecePane().getPiece(temp).getColor() != getColor() && !(GameLogic.getPiecePane().getPiece(temp) instanceof Empty)) ||  GameLogic.getPiecePane().getPiece(temp).getEnpassant())
+					result.add(temp);
 			} catch (IllegalArgumentException e) {
 				
 			}

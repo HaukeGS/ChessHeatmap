@@ -19,8 +19,8 @@ public class ChessBoard extends StackPane {
 	private PiecePane piecePane;
 	
 	public ChessBoard() {		
-		boardPane = new BoardPane(this);
-		piecePane = new PiecePane(this);
+		boardPane = new BoardPane();
+		piecePane = new PiecePane();
 		initBoard();
 //		initPiecesFromFen("rn2k1r1/ppp1pp1p/3p2p1/5bn1/P7/2N2B2/1PPPPP2/2BNK1RR w Gkq - 4 11");
 		getChildren().addAll(boardPane, piecePane);

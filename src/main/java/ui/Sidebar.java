@@ -4,9 +4,12 @@ package ui;
 import chessboard.Move;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import util.GameLogic;
@@ -31,6 +34,7 @@ public class Sidebar extends VBox {
 			
 		});
 		
+		
 		this.reset = new Button("Reset") {
 			@Override
 			public void fire() {
@@ -39,6 +43,12 @@ public class Sidebar extends VBox {
 		};
 		
 		this.moves = new ListView<Move>(GameLogic.getMoveList());
+		moves.setOnMouseClicked(event -> {
+			if (event.getButton() == MouseButton.PRIMARY) {
+				Move selectedMove = moves.getSelectionModel().getSelectedItem();
+				GameLogic.initFromFen(selectedMove.getFen());
+			}
+		});
 		
 //		this.moves = new TableView<Move>();
 //		TableColumn<Move, String> whitesColumn = new TableColumn<Move, String>("Whites Moves");

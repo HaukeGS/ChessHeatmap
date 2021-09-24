@@ -1,5 +1,6 @@
 package chessboard;
 
+import chessutility.GameLogic;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import pieces.Bishop;
@@ -11,7 +12,6 @@ import pieces.Piece;
 import pieces.Piece.Player;
 import pieces.Queen;
 import pieces.Rook;
-import util.GameLogic;
 
 public class ChessBoard extends StackPane {
 	

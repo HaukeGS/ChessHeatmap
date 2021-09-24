@@ -6,11 +6,11 @@ import java.util.Set;
 
 import chessboard.Coord;
 import chessboard.Move;
+import chessutility.GameLogic;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import util.GameLogic;
 
 public abstract class Piece extends Rectangle {
 	public enum Player {
@@ -52,18 +52,18 @@ public abstract class Piece extends Rectangle {
 		this.setOnMouseClicked(event -> {
 			if (event.getButton() == MouseButton.PRIMARY) { // left clicked piece
 				Piece piece = (Piece) event.getSource(); // clicked piece
-				if (util.GameLogic.getSelected() == null) { // if no piece is selected
+				if (chessutility.GameLogic.getSelected() == null) { // if no piece is selected
 					if (!(piece instanceof Empty)) { // and an actual piece and no empty space is clicked
-						util.GameLogic.setSelected(piece); // select the clicked piece
+						chessutility.GameLogic.setSelected(piece); // select the clicked piece
 					} else {
 
 					}
-				} else if (util.GameLogic.getSelected() != null) {
-					Move move = new Move(util.GameLogic.getSelected().getCoord(), piece.getCoord(), util.GameLogic.getSelected());
-					if (util.GameLogic.isMoveLegal(move)) {
-						util.GameLogic.movePiece(move);
+				} else if (chessutility.GameLogic.getSelected() != null) {
+					Move move = new Move(chessutility.GameLogic.getSelected().getCoord(), piece.getCoord(), chessutility.GameLogic.getSelected());
+					if (chessutility.GameLogic.isMoveLegal(move)) {
+						chessutility.GameLogic.movePiece(move);
 					} else {
-						util.GameLogic.deselect();
+						chessutility.GameLogic.deselect();
 					}
 				}
 			} else if (event.getButton() == MouseButton.SECONDARY) { // right clicked piece

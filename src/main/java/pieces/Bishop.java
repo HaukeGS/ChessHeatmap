@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import chessboard.Coord;
-import util.GameLogic;
+import chessutility.GameLogic;
 
 public class Bishop extends Piece {
 		

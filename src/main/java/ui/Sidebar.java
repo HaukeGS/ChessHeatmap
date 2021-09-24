@@ -2,6 +2,7 @@ package ui;
 
 
 import chessboard.Move;
+import chessutility.GameLogic;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
@@ -11,11 +12,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
-import util.GameLogic;
 
 public class Sidebar extends VBox {
 	
 	private CheckBox checkBoxColored;
+	private CheckBox xray;
 	private Button reset;
 	private Label evalBarLabel;
 	private Slider evalBar;
@@ -30,6 +31,15 @@ public class Sidebar extends VBox {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				GameLogic.setColored(newValue);
+				GameLogic.updateBoard();
+			}
+			
+		});
+		this.xray = new CheckBox("Xray");
+		xray.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				GameLogic.setXray(newValue);
 				GameLogic.updateBoard();
 			}
 			
@@ -67,7 +77,7 @@ public class Sidebar extends VBox {
 //		moves.getColumns().addAll(whitesColumn, blacksColumn);
 		
 		
-		getChildren().addAll(checkBoxColored, evalBarLabel, evalBar, reset, moves);
+		getChildren().addAll(checkBoxColored, xray, evalBarLabel, evalBar, reset, moves);
 	}
 	
 	public void setEvalScore(double score) {

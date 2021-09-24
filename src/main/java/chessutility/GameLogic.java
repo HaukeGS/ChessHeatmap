@@ -1,4 +1,4 @@
-package util;
+package chessutility;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public final class GameLogic {
 		moveCount = 0;
 		colored = false;
 		highlightingAttackers = false;
-		xray = true;
+		xray = false;
 //		whitesMoves = FXCollections.observableArrayList();
 //		blacksMoves = FXCollections.observableArrayList();
 		moves = FXCollections.observableArrayList();

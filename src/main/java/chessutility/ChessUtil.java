@@ -1,4 +1,4 @@
-package util;
+package chessutility;
 
 public class ChessUtil {
 	

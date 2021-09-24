@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import chessutility.GameLogic;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.layout.ColumnConstraints;
@@ -20,7 +21,6 @@ import pieces.Piece;
 import pieces.Piece.Player;
 import pieces.Queen;
 import pieces.Rook;
-import util.GameLogic;
 
 public class PiecePane extends GridPane {
 

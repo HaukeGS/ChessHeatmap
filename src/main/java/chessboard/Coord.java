@@ -1,6 +1,6 @@
 package chessboard;
 
-import util.ChessUtil;
+import chessutility.ChessUtil;
 
 public class Coord {
 	

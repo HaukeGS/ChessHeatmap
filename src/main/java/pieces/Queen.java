@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import chessboard.Coord;
-import util.GameLogic;
+import chessutility.GameLogic;
 
 public class Queen extends Piece {
 	
@@ -144,7 +144,7 @@ public class Queen extends Piece {
 						for (temp = new Coord(temp.getX()-1, temp.getY());GameLogic.getPiecePane().getPiece(temp) instanceof Empty; temp = new Coord(temp.getX()-1, temp.getY())) {
 							result.add(temp);
 						}
-						result.add(new Coord(temp.getX(), temp.getY()-1));
+						result.add(new Coord(temp.getX()-1, temp.getY()));
 					}
 					
 					break;	
@@ -163,7 +163,7 @@ public class Queen extends Piece {
 						for (temp = new Coord(temp.getX()+1, temp.getY());GameLogic.getPiecePane().getPiece(temp) instanceof Empty; temp = new Coord(temp.getX()+1, temp.getY())) {
 							result.add(temp);
 						}
-						result.add(new Coord(temp.getX(), temp.getY()-1));
+						result.add(new Coord(temp.getX()+1, temp.getY()));
 					}					
 					break;	
 				}
@@ -181,7 +181,7 @@ public class Queen extends Piece {
 						for (temp = new Coord(temp.getX(), temp.getY()+1);GameLogic.getPiecePane().getPiece(temp) instanceof Empty; temp = new Coord(temp.getX(), temp.getY()+1)) {
 							result.add(temp);
 						}
-						result.add(new Coord(temp.getX(), temp.getY()-1));
+						result.add(new Coord(temp.getX(), temp.getY()+1));
 					}					
 					break;
 				}

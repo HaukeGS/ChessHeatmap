@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import chessboard.Coord;
-import util.GameLogic;
+import chessutility.GameLogic;
 
 public class King extends Piece {
 	

@@ -1,6 +1,5 @@
 package application;
 	
-import chessboard.ChessBoard;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

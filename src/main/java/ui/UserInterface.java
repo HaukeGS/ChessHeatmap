@@ -1,10 +1,10 @@
 package ui;
 
 import chessboard.ChessBoard;
+import chessutility.GameLogic;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
-import util.GameLogic;
 
 public class UserInterface extends BorderPane {
 	

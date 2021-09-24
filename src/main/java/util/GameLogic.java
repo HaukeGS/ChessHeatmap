@@ -32,6 +32,7 @@ public final class GameLogic {
 	private static Piece selected;
 	private static boolean colored;
 	private static boolean highlightingAttackers;
+	private static boolean xray;
 //	private static ObservableList<Move> whitesMoves;
 //	private static ObservableList<Move> blacksMoves;
 	private static ObservableList<Move> moves;
@@ -53,6 +54,7 @@ public final class GameLogic {
 		moveCount = 0;
 		colored = false;
 		highlightingAttackers = false;
+		xray = true;
 //		whitesMoves = FXCollections.observableArrayList();
 //		blacksMoves = FXCollections.observableArrayList();
 		moves = FXCollections.observableArrayList();
@@ -666,5 +668,13 @@ public final class GameLogic {
 	
 	public static void setSidebar(Sidebar sidebar) {
 		sidebarUI = sidebar;
+	}
+	
+	public static void setXray(boolean b) {
+		xray = b;
+	}
+	
+	public static boolean getXray() {
+		return xray;
 	}
 }

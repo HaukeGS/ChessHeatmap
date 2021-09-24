@@ -134,6 +134,8 @@ public class PiecePane extends GridPane {
 		getChildren().remove(source);
 		source.setCoord(targetCoord);
 		source.setHasMoved(true);
+		if (!(getPiece(move.getTarget()) instanceof Empty))
+			move.setTakes(true);
 		if (isKingInCheckmate(GameLogic.getOpponent(move)))
 			move.setCheckmate(true);
 		if (isKingInCheck(GameLogic.getOpponent(move)))
@@ -359,5 +361,13 @@ public class PiecePane extends GridPane {
 				p.setEnpassant(false);
 			}
 		}
+	}
+
+	public void promote(Piece piece) {
+		if (!(piece instanceof Pawn))
+			throw new IllegalStateException("Tried to promote not a pawn");
+		Piece queen = new Queen(piece.getColor(), piece.getCoord());
+		removePiece(piece.getCoord());
+		addPiece(queen);
 	}
 }

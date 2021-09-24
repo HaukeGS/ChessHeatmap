@@ -17,6 +17,7 @@ import pieces.Piece;
 import pieces.Piece.Player;
 import pieces.Queen;
 import pieces.Rook;
+import ui.Sidebar;
 
 public final class GameLogic {
 
@@ -31,9 +32,10 @@ public final class GameLogic {
 	private static Piece selected;
 	private static boolean colored;
 	private static boolean highlightingAttackers;
-	private static ObservableList<Move> whitesMoves;
-	private static ObservableList<Move> blacksMoves;
+//	private static ObservableList<Move> whitesMoves;
+//	private static ObservableList<Move> blacksMoves;
 	private static ObservableList<Move> moves;
+	private static Sidebar sidebarUI;
 
 	private static enum CastleRights {
 		BOTH, KINGSIDE, QUEENSIDE, NONE
@@ -42,7 +44,8 @@ public final class GameLogic {
 	public static void init(PiecePane pP, BoardPane bP) {
 		piecePane = pP;
 		boardPane = bP;
-//			stockfish = new Stockfish();
+		stockfish = new Stockfish();
+		stockfish.startEngine();
 		toMove = Player.WHITE;
 		whiteCastleRights = CastleRights.BOTH;
 		blackCastleRights = CastleRights.BOTH;
@@ -50,20 +53,9 @@ public final class GameLogic {
 		moveCount = 0;
 		colored = false;
 		highlightingAttackers = false;
-		whitesMoves = FXCollections.observableArrayList();
-		blacksMoves = FXCollections.observableArrayList();
+//		whitesMoves = FXCollections.observableArrayList();
+//		blacksMoves = FXCollections.observableArrayList();
 		moves = FXCollections.observableArrayList();
-		updateBoard();
-//			System.out.println(stockfish.startEngine());
-	}
-
-	public static void initFromFen(PiecePane pP, BoardPane bP, String fen) {
-		piecePane = pP;
-		boardPane = bP;
-		if (fen.contains("w"))
-			toMove = Player.WHITE;
-		else
-			toMove = Player.BLACK;
 	}
 
 	public static void initFromFen(String fen) {
@@ -73,7 +65,9 @@ public final class GameLogic {
 			piecePane.clearPieces();
 			int x = 0;
 			int y = 0;
-			for (int i = 0; fen.charAt(i) != ' '; i++) {
+			int i = 0;
+			//initialisiere die figuren
+			for (; fen.charAt(i) != ' '; i++) {
 				if (fen.charAt(i) == '/') {
 					x = 0;
 					y++;
@@ -90,8 +84,45 @@ public final class GameLogic {
 					x++;
 				}
 			}
+			//determine whos turn it is
+			if (fen.charAt(++i) == 'w')
+				toMove = Player.WHITE;
+			else
+				toMove = Player.BLACK;
+			//reset castle rights
+			whiteCastleRights = CastleRights.NONE;
+			blackCastleRights = CastleRights.NONE;
+			//determine castle rights
+			for (i+=2; fen.charAt(i) != ' '; i++) {
+				if (fen.charAt(i) == 'K')
+					whiteCastleRights = CastleRights.KINGSIDE;
+				if (fen.charAt(i) == 'Q') {
+					if (whiteCastleRights == CastleRights.KINGSIDE)
+						whiteCastleRights = CastleRights.BOTH;
+					else
+						whiteCastleRights = CastleRights.QUEENSIDE;
+				}
+				if (fen.charAt(i) == 'k') 
+					blackCastleRights = CastleRights.KINGSIDE;
+				if (fen.charAt(i) == 'q') {
+					if (blackCastleRights == CastleRights.KINGSIDE)
+						blackCastleRights = CastleRights.BOTH;
+					else
+						blackCastleRights = CastleRights.QUEENSIDE;
+				}
+			}
+			if (fen.charAt(++i) != '-') {
+				char c = fen.charAt(i);
+				int integer = Character.getNumericValue(fen.charAt(++i));
+				Coord coord = new Coord(c, integer);
+				piecePane.getPiece(coord).setEnpassant(true);
+			}
 			piecePane.setGridLinesVisible(true);
 			boardPane.setGridLinesVisible(true);
+			i += 2;
+			emptyMoveCount = Character.getNumericValue(fen.charAt(i));
+			i += 2;
+			moveCount = Character.getNumericValue(fen.charAt(i));
 			updateBoard();
 		} catch (Exception e) {
 			System.out.println("Invalid FEN String");
@@ -173,6 +204,7 @@ public final class GameLogic {
 		deselect();
 		recolorSquares();
 		highlightKingInCheck();
+		sidebarUI.setEvalScore(stockfish.getEvalScore(generateFenString(), 50));
 	}
 
 	public static void recolorSquares() {
@@ -214,8 +246,6 @@ public final class GameLogic {
 		if (selected != move.getPiece())
 			throw new IllegalStateException("Crashed because you tried to move a piece without selecting one");
 		performSpecialMove(move);
-		if (!(piecePane.getPiece(move.getTarget()) instanceof Empty))
-			move.setTakes(true);
 		piecePane.movePiece(move);
 		updateBoard();
 		updateCastleRights(move);
@@ -223,10 +253,10 @@ public final class GameLogic {
 		move.setFen(generateFenString());
 		concatMoveList();
 		moves.add(move);
-		if (move.getPiece().getColor() == Player.BLACK)
-			blacksMoves.add(move);
-		else
-			whitesMoves.add(move);
+//		if (move.getPiece().getColor() == Player.BLACK)
+//			blacksMoves.add(move);
+//		else
+//			whitesMoves.add(move);
 	}
 	
 	private static void concatMoveList() {
@@ -263,6 +293,10 @@ public final class GameLogic {
 					piecePane.getPiece(new Coord(move.getTarget().getX() - 2, move.getTarget().getY()))));
 			move.setQueenSideCastles(true);
 		}
+		if (isPromotion(move)) {
+			piecePane.promote(move.getPiece());
+		}
+		
 		if (isEnPassant(move)) {
 			if (move.getPiece().getColor() == Player.WHITE)
 				piecePane.removePiece(new Coord(move.getTarget().getX(), move.getTarget().getY() + 1));
@@ -304,7 +338,7 @@ public final class GameLogic {
 		return false;
 	}
 
-	public static boolean isMovePromotion(Move move) {
+	public static boolean isPromotion(Move move) {
 		if ((selected instanceof Pawn) && ((move.getTarget().getY() == 0) || (move.getTarget().getY() == 7)))
 			return true;
 		return false;
@@ -349,42 +383,6 @@ public final class GameLogic {
 				blackCastleRights = CastleRights.NONE;
 		}
 
-	}
-
-	private static void castlingRooks(Coord source, Coord target) {
-//		piecePane.movePiece(source, target);
-	}
-
-	private static void isMoveSpecial(Move move) {
-		Coord source = move.getSource();
-		Coord target = move.getTarget();
-		if ((selected instanceof Pawn) && (source.getX() != target.getX())
-				&& (piecePane.getPiece(target) instanceof Empty)) {
-			// en passant move
-			System.out.println("en passant");
-			if (toMove.equals(Player.WHITE)) {
-				Coord toRemove = new Coord(target.getX(), target.getY() + 1);
-				piecePane.removePiece(toRemove);
-			} else {
-				Coord toRemove = new Coord(target.getX(), target.getY() - 1);
-				piecePane.removePiece(toRemove);
-			}
-		} else if ((selected instanceof King) && (Math.abs(target.getX() - source.getX()) >= 2)) {
-			// castling move
-			System.out.println("castling");
-			if (target.getX() == 2) { // Queenside castle
-				castlingRooks(new Coord(target.getX() - 2, target.getY()), new Coord(target.getX() + 1, target.getY()));
-			} else if (target.getX() == 6) { // Kingside castle
-				castlingRooks(new Coord(target.getX() + 1, target.getY()), new Coord(target.getX() - 1, target.getY()));
-			} else {
-				throw new RuntimeException("Something went wrong during castling. King is at" + target.toChessString()
-						+ ", where he is not supposed to be.");
-			}
-		} else if ((selected instanceof Pawn) && ((target.getY() == 0) || (target.getY() == 7))) {
-			// promotion
-
-			System.out.println("promotion");
-		}
 	}
 
 	public static String generateFenStringFlippedSides() {
@@ -512,8 +510,18 @@ public final class GameLogic {
 			result = "";
 
 		// possible en passant
-		// ToDo
-		result += " -";
+		boolean found = false;
+		for (Piece[] pp : pieces) {
+			for (Piece p : pp) {
+				if (p.getEnpassant()) {
+					result += p.getCoord().toString();
+					found = true;
+					break;					
+				}				
+			}
+		}
+		if (found)
+			result += " -";
 
 		// empty move count
 		result += " " + emptyMoveCount;
@@ -541,8 +549,8 @@ public final class GameLogic {
 	}
 
 	private static void clearMoveLists() {
-		whitesMoves.clear();
-		blacksMoves.clear();
+//		whitesMoves.clear();
+//		blacksMoves.clear();
 		moves.clear();
 	}
 
@@ -644,15 +652,19 @@ public final class GameLogic {
 		return false;
 	}
 
-	public static ObservableList<Move> getBlackMoveList() {
-		return blacksMoves;
-	}
-
-	public static ObservableList<Move> getWhiteMoveList() {
-		return whitesMoves;
-	}
+//	public static ObservableList<Move> getBlackMoveList() {
+//		return blacksMoves;
+//	}
+//
+//	public static ObservableList<Move> getWhiteMoveList() {
+//		return whitesMoves;
+//	}
 
 	public static ObservableList<Move> getMoveList() {
 		return moves;
+	}
+	
+	public static void setSidebar(Sidebar sidebar) {
+		sidebarUI = sidebar;
 	}
 }

@@ -10,8 +10,8 @@ import javafx.scene.paint.Color;
 
 public class BoardPane extends GridPane {
 
-	Highlight[][] highlights;
-	Square[][] squares;
+	private Highlight[][] highlights;
+	private Square[][] squares;
 
 	public BoardPane() {
 		squares = new Square[8][8];
@@ -43,12 +43,6 @@ public class BoardPane extends GridPane {
 				squares[i][j].recolor(colored);
 			}
 		}
-	}
-
-	protected void removeSquare(int x, int y) {
-		Square toRemove = squares[x][y];
-		getChildren().remove(toRemove);
-		squares[x][y] = null;
 	}
 
 	public void highlightSquareAsAttacker(Coord c) {

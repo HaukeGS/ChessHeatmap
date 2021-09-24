@@ -4,26 +4,27 @@ package ui;
 import chessboard.Move;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import util.GameLogic;
 
 public class Sidebar extends VBox {
 	
 	private CheckBox checkBoxColored;
 	private Button reset;
-	private Rectangle evalBar;
+	private Label evalBarLabel;
+	private Slider evalBar;
 //	private TableView<Move> moves;
 	private ListView<Move> moves;
 
 	public Sidebar() {
 		super();
+		this.setSpacing(10);
 		this.checkBoxColored = new CheckBox("Colored");
 		checkBoxColored.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
@@ -33,6 +34,10 @@ public class Sidebar extends VBox {
 			}
 			
 		});
+		evalBarLabel = new Label("Stockfish Evaluation");
+		evalBar = new Slider(-10, 10, 0.0);
+		evalBar.setDisable(true);
+		evalBar.setShowTickLabels(true);
 		
 		
 		this.reset = new Button("Reset") {
@@ -62,6 +67,14 @@ public class Sidebar extends VBox {
 //		moves.getColumns().addAll(whitesColumn, blacksColumn);
 		
 		
-		getChildren().addAll(checkBoxColored, reset, moves);
+		getChildren().addAll(checkBoxColored, evalBarLabel, evalBar, reset, moves);
+	}
+	
+	public void setEvalScore(double score) {
+		if (score > 10)
+			score = 10;
+		else if (score < -10)
+			score = -10;
+		evalBar.setValue(score);
 	}
 }

@@ -4,6 +4,7 @@ import chessboard.ChessBoard;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
+import util.GameLogic;
 
 public class UserInterface extends BorderPane {
 	
@@ -13,8 +14,10 @@ public class UserInterface extends BorderPane {
 	
 	public UserInterface() {
 		this.chessBoard = new ChessBoard();
-		this.fenui = new FenUI(chessBoard);
+		this.fenui = new FenUI();
 		this.sidebar = new Sidebar();
+		GameLogic.setSidebar(sidebar);
+		GameLogic.updateBoard();
 		setAlignment(chessBoard, Pos.CENTER);
 		setMargin(chessBoard, new Insets(20, 20, 20, 20));
 		setAlignment(fenui, Pos.CENTER);

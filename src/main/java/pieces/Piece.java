@@ -20,10 +20,10 @@ public abstract class Piece extends Rectangle {
 	private Image image;
 	private Player color;
 	private char fenChar;
-	protected Coord coord;
+	private Coord coord;
 	protected boolean hasMoved;
 	private boolean enpassant;
-	protected List<Piece> attackers;
+	private List<Piece> attackers;
 
 	public Piece(Player c, Coord coord) {
 		super(100, 100);

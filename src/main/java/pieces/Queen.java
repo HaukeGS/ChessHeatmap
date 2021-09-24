@@ -22,7 +22,7 @@ public class Queen extends Piece {
 	@Override
 	public Set<Coord> getAttackedCoords() {
 		HashSet<Coord> result = new HashSet<Coord>();
-		Coord temp = coord;
+		Coord temp = getCoord();
 		while (true) {
 			try {
 				temp = new Coord(temp.getX(), temp.getY()-1);

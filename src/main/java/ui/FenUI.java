@@ -1,39 +1,46 @@
 package ui;
 
-import chessboard.ChessBoard;
-import util.GameLogic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import util.GameLogic;
 
 public class FenUI extends HBox {
 	
 	Label label;
 	TextField textField;
-	Button button;
-	ChessBoard cb;
+	Button get;
+	Button go;
 	
-	public FenUI(ChessBoard cb) {
+	public FenUI() {
 		super();
-		this.cb = cb;
 		label = new Label("FEN-String:");
 		textField = new TextField();
-		button = new Button("Go");
-		getChildren().addAll(label, textField, button);
+		go = new Button("Go");
+		get = new Button("Get");
+		getChildren().addAll(label, textField, go, get);
 		setSpacing(8);
 		setPrefWidth(900);
 		textField.setPrefWidth(700);
 		
-		EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
+		EventHandler<ActionEvent> goButtonHandler = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				 GameLogic.initFromFen(textField.getText());
 			}
 		};
-		button.setOnAction(buttonHandler);
+		
+		EventHandler<ActionEvent> getButtonHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				 textField.setText(GameLogic.generateFenString());
+			}
+		};
+		go.setOnAction(goButtonHandler);
+		get.setOnAction(getButtonHandler);
 //		getChildren().filtered(p -> p.getClass() == TextField.class).get(0);
 	}
 

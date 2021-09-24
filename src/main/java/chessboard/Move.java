@@ -1,26 +1,19 @@
 package chessboard;
 
-import pieces.Empty;
 import pieces.Pawn;
 import pieces.Piece;
 
 public class Move {
 	
-	Coord source;
-	Coord target;
-	Piece piece;
-	boolean kingSideCastles;
-	boolean QueenSideCastles;
-	boolean takes;
-	boolean check;
-	boolean checkmate;
-	String fen;
-	
-//	public Move (Coord s, Coord t) {
-//		this.source = s;
-//		this.target = t;
-//		
-//	}
+	private Coord source;
+	private Coord target;
+	private Piece piece;
+	private boolean kingSideCastles;
+	private boolean QueenSideCastles;
+	private boolean takes;
+	private boolean check;
+	private boolean checkmate;
+	private String fen;
 	
 	public Move (Coord s, Coord t, Piece p) {
 		this.source = s;
